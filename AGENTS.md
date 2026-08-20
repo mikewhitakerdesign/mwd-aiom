@@ -7,11 +7,11 @@ Executable Kernel — a human-governed, AI-assisted operating architecture for
 bootstrapping, governing, validating, resuming, and evolving digital-product
 and automation work.
 
-This repository is currently at **Repository Foundation** stage (v0.1). The
-AIOM Core Seed, Capability Bundles, Atomic Capabilities, project-state
-templates and schemas, validator, and Runtime Probe do not exist yet.
-Nothing in this repository implements the AIOM architecture until later
-initiatives land it — see `README.md` for the current roadmap.
+This repository is currently at **AIOM Core Seed Foundation** stage
+(v0.2). The AIOM Core Seed exists in foundation form — see `seed/`.
+Capability Bundles, Atomic Capabilities, project-state templates and
+schemas, validator, and Runtime Probe do not exist yet. See `README.md`
+for the current roadmap.
 
 ## How repository guidance is organized
 
@@ -22,10 +22,10 @@ Claude Code or otherwise — should read this file first.
 Runtime-specific files (e.g. `CLAUDE.md`) are thin pointers back to this
 file. They must not fork governance policy per runtime.
 
-As the AIOM Core Seed and its own governance/architecture instructions are
-implemented in later initiatives, they will live under `seed/` and
-`docs/decisions/`. This file will be updated to point to them rather than
-duplicating their content.
+The AIOM Core Seed lives under `seed/` — see `seed/README.md` for what it
+is and how it relates to this repository. This file governs work on
+`mwd-aiom` itself; it does not duplicate the Seed's content, and the Seed
+is not runtime instructions for this repository.
 
 ## Authority and scope
 

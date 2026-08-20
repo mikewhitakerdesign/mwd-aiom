@@ -1,6 +1,6 @@
 {
   "name": "mwd-aiom",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Source repository for the AIOM Core Seed and Minimal Executable Kernel — a human-governed, AI-assisted operating architecture for bootstrapping, governing, validating, resuming, and evolving digital-product and automation work.",
   "type": "module",
