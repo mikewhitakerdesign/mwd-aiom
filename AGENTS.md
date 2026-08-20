@@ -7,11 +7,14 @@ Executable Kernel — a human-governed, AI-assisted operating architecture for
 bootstrapping, governing, validating, resuming, and evolving digital-product
 and automation work.
 
-This repository is currently at **AIOM Core Seed Foundation** stage
-(v0.2). The AIOM Core Seed exists in foundation form — see `seed/`.
+This repository builds the experimental **AIOM v0.1** proving
+implementation. Implementation progress is tracked by initiative, not by
+the AIOM version: **Initiative 2 — AIOM Core Seed Foundation** is
+complete, and the AIOM Core Seed exists in foundation form — see `seed/`.
 Capability Bundles, Atomic Capabilities, project-state templates and
-schemas, validator, and Runtime Probe do not exist yet. See `README.md`
-for the current roadmap.
+schemas, validator, and Runtime Probe do not exist yet (Initiative 3 —
+Capability Architecture is next). See `README.md` for the current
+roadmap.
 
 ## How repository guidance is organized
 

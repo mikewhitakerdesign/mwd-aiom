@@ -68,7 +68,10 @@ mechanisms; individual projects consume them.
 
 ## Current status
 
-`v0.2 — AIOM Core Seed Foundation`
+- AIOM/repository implementation version: **experimental v0.1**
+- Current implementation progress: **Initiative 2 — AIOM Core Seed
+  Foundation — complete**
+- Next roadmap increment: **Initiative 3 — Capability Architecture**
 
 ## Implementation roadmap
 
