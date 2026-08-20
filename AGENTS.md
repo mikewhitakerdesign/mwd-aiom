@@ -9,21 +9,27 @@ and automation work.
 
 This repository builds the experimental **AIOM v0.1** proving
 implementation. Implementation progress is tracked by initiative, not by
-the AIOM version: **Initiative 7 — Runtime Probe + Runtime-Neutral
-Orchestration** is complete. The AIOM Core Seed exists in foundation form,
-defines the reusable Capability Bundle and Atomic Capability catalog,
-defines the four durable project-state artifact templates and their
-TypeScript/Zod schemas, has a thin, read-only deterministic validator over
-that schema layer, a read-only Transition Gate that deterministically
-evaluates whether a proposed Work Item transition is structurally
-permitted and whether required authorization evidence exists, and now also
-a Runtime Probe (structured, evidence-backed, provider-neutral Runtime
-Evidence over a bounded requirement vocabulary) and a read-only,
-Runtime-Neutral Orchestration foundation that composes project validation,
-the Transition Gate, and Runtime Evidence into a bounded governed
-disposition — see `seed/`, `seed/capabilities/`, `seed/templates/`,
+the AIOM version: **Initiative 8 — Bootstrap Execution + Synthetic
+End-to-End Proof** is complete. The AIOM Core Seed exists in foundation
+form, defines the reusable Capability Bundle and Atomic Capability
+catalog, defines the four durable project-state artifact templates and
+their TypeScript/Zod schemas, has a thin, read-only deterministic
+validator over that schema layer, a read-only Transition Gate that
+deterministically evaluates whether a proposed Work Item transition is
+structurally permitted and whether required authorization evidence
+exists, a Runtime Probe (structured, evidence-backed, provider-neutral
+Runtime Evidence over a bounded requirement vocabulary), a read-only,
+Runtime-Neutral Orchestration foundation that composes project
+validation, the Transition Gate, and Runtime Evidence into a bounded
+governed disposition, and now also a first executable Project Bootstrap
+(deterministic mechanics that validate, assemble, and — in controlled
+synthetic/test destinations only — materialize a candidate Project
+Profile, Capability Activation Record, and first Governed Work Item from
+an external reasoning contract, composing all of the above) — see
+`seed/`, `seed/capabilities/`, `seed/templates/`, `seed/bootstrap.md`,
 `src/kernel/validation/`, `src/kernel/transition/`, `src/kernel/runtime/`,
-and `src/kernel/orchestration/`. See `README.md` for the current roadmap.
+`src/kernel/orchestration/`, and `src/kernel/bootstrap/`. See `README.md`
+for the current roadmap.
 
 ## How repository guidance is organized
 

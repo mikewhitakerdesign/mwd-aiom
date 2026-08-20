@@ -6,6 +6,7 @@ export const approvalModeSchema = z.enum([
   'durable-policy',
   'recurring-case-by-case',
 ]);
+export type ApprovalMode = z.infer<typeof approvalModeSchema>;
 
 export const approvalStatusSchema = z.enum([
   'pending',

@@ -86,9 +86,13 @@ enforced — only that Capability definitions may reference them coherently.
 
 ## What is not implemented yet
 
-Project Profile signal *detection*, Capability relevance/activation
-*decision logic*, Standards/Gates enforcement mechanisms, and Project
-Bootstrap all remain future work. (The durable *shapes* those decisions
+Project Profile signal *detection* and Capability relevance/activation
+*decision logic* remain a reasoning-runtime responsibility, not
+deterministic code — see [`../bootstrap.md`](../bootstrap.md) and
+`src/kernel/bootstrap/` for Project Bootstrap v0.1, which validates,
+assembles, and (in controlled destinations) materializes those decisions
+once made, without deciding them itself. Standards/Gates enforcement
+mechanisms remain future work. (The durable *shapes* those decisions
 get recorded in — Project Profile and Capability Activation Record
 templates/schemas — now exist; see
 [`../templates/README.md`](../templates/README.md). A deterministic

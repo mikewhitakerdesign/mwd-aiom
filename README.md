@@ -14,7 +14,7 @@ itself a finished product.
 
 ## What this repository contains
 
-At this stage (**AIOM Core Seed Foundation**), this repository contains:
+This repository currently contains:
 
 - Provider-neutral repository guidance (`AGENTS.md`) and a Claude
   Code-specific pointer (`CLAUDE.md`)
@@ -72,26 +72,52 @@ At this stage (**AIOM Core Seed Foundation**), this repository contains:
   `ready-for-governed-execution`). It reasons about what is known,
   blocked, or unresolved; it never grants authority, executes work, or
   duplicates validator/gate logic — see `src/kernel/orchestration/orchestrate.ts`.
+- Project Bootstrap v0.1 (`seed/bootstrap.md`, `src/kernel/bootstrap/`) —
+  the first executable Bootstrap flow: deterministic mechanics
+  (`src/kernel/bootstrap/`) that validate, assemble, and — only in
+  controlled synthetic/test destinations, never live in `mwd-aiom` —
+  materialize a candidate Project Profile, Capability Activation Record,
+  and first Governed Work Item from a reasoning contract
+  (`BootstrapReasoningDecisions`), plus provider-neutral process guidance
+  (`seed/bootstrap.md`) for whichever runtime performs that reasoning.
+  Bootstrap composes Kernel Validation, the Transition Gate, the Runtime
+  Probe, and the Orchestrator; it performs no bundle-relevance,
+  capability-activation, or Bootstrap-Ready reasoning itself — see
+  `seed/README.md` and `src/kernel/bootstrap/types.ts`.
+- Project-facing runtime discovery (`seed/templates/project-agents.md`,
+  `seed/templates/project-claude.md`) — the minimal, generated
+  AGENTS.md/CLAUDE.md pointer a Bootstrap-materialized project receives,
+  so a fresh runtime can locate that project's own `.aiom/` state and
+  `.aiom/seed/` guidance without this repository's development
+  instructions or prior conversational context.
 
-No project — including this one — has a live `.aiom/` directory.
-Capability relevance, activation, runtime availability, and authorization
-remain distinct — this repository defines what capabilities are, not
-which are turned on for a given project; the Kernel Validation validator
-checks that recorded decisions reference known IDs coherently, not
-whether those decisions themselves are correct; the Transition Gate
-checks structural eligibility and provable authorization, not whether a
-transition is strategically wise; the Runtime Probe reports only
-mechanically discoverable facts about the current runtime, never
-authorization; and the Orchestrator composes those facts into a bounded
-disposition, never an execution decision. Nothing here should be read as
-project Bootstrap, autonomous execution, or state mutation until a later
-initiative adds it.
+No project other than a controlled synthetic Bootstrap test destination
+has a live `.aiom/` directory — `mwd-aiom` itself never does. Capability
+relevance, activation, runtime availability, and authorization remain
+distinct — this repository defines what capabilities are, not which are
+turned on for a given project; the Kernel Validation validator checks
+that recorded decisions reference known IDs coherently, not whether those
+decisions themselves are correct; the Transition Gate checks structural
+eligibility and provable authorization, not whether a transition is
+strategically wise; the Runtime Probe reports only mechanically
+discoverable facts about the current runtime, never authorization; the
+Orchestrator composes those facts into a bounded disposition, never an
+execution decision; and Bootstrap determines governed project
+configuration, never the product itself — it does not generate
+application source code and does not select a framework or stack unless
+later governed work and project evidence justify that choice.
 
 ## What this is not
 
 - Not an application starter or product template
 - Not a web-app starter
 - Not an autonomous multi-agent platform
+- Not a fixed Bootstrap questionnaire or project generator — Bootstrap
+  inspects before asking and determines operating configuration, not
+  application source code
+- Not an autonomous product manager — Bootstrap surfaces one Next
+  Governed Action and stops at Owner-authority boundaries; it does not
+  build a backlog or decide strategic work on the Owner's behalf
 - Not architecturally tied to Claude Code — Claude Code is the first proving
   runtime, not part of the AIOM definition
 - Not a copy of, or a fork from, the Portfolio proof-of-concept repository
@@ -104,7 +130,7 @@ implemented**:
 ```
 AIOM Core
   → AIOM Core Seed              (foundation implemented — see seed/)
-  → Project Bootstrap           (not yet implemented)
+  → Project Bootstrap           (v0.1 implemented — see seed/bootstrap.md, src/kernel/bootstrap/)
   → Project Profile             (template + schema implemented — see seed/templates/)
   → Capability Bundles          (definitions implemented — see seed/capabilities/)
   → Atomic Capabilities         (definitions implemented — see seed/capabilities/)
@@ -129,10 +155,9 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 7 — Runtime Probe +
-  Runtime-Neutral Orchestration — complete**
-- Next roadmap increment: **Initiative 8 — Fixtures, Documentation &
-  End-to-End v0.1 Proof**
+- Current implementation progress: **Initiative 8 — Bootstrap Execution +
+  Synthetic End-to-End Proof — complete**
+- Next roadmap increment: **Initiative 9 — Simple Greenfield Project POC**
 
 ## Implementation roadmap
 
@@ -146,7 +171,8 @@ implementation evidence warrants):
 5. Kernel Validation — done
 6. Transition & Approval Kernel — done
 7. Runtime Probe + Runtime-Neutral Orchestration — done
-8. Fixtures, Documentation & End-to-End v0.1 Proof
+8. Bootstrap Execution + Synthetic End-to-End Proof — done
+9. Simple Greenfield Project POC
 
 ## Validation
 

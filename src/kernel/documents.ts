@@ -2,6 +2,8 @@ import {
   fromZodSafeParse,
   parseFrontmatterDocument,
   parseYamlDocument,
+  stringifyFrontmatterDocument,
+  stringifyYamlDocument,
   type ParseResult,
 } from './parsing/index.js';
 import {
@@ -61,4 +63,34 @@ export function parseOwnerApprovalDocument(
     return parsed;
   }
   return fromZodSafeParse(ownerApprovalArtifactSchema.safeParse(parsed.data));
+}
+
+/**
+ * Write-side counterparts, needed starting with Project Bootstrap
+ * (Initiative 8) materializing artifacts it constructs. Each serializer
+ * re-validates through the same schema used to parse (`.parse`, not
+ * `.safeParse` — a caller constructing a document programmatically should
+ * fail loudly on an invalid shape, not receive a silently-wrong file), so
+ * a round-trip through parse -> serialize -> parse is guaranteed schema-
+ * conformant.
+ */
+
+export function serializeProjectProfileDocument(profile: ProjectProfile): string {
+  const validated = projectProfileSchema.parse(profile);
+  return stringifyFrontmatterDocument(validated.frontmatter, validated.body);
+}
+
+export function serializeCapabilityActivationDocument(
+  record: CapabilityActivationRecord,
+): string {
+  return stringifyYamlDocument(capabilityActivationRecordSchema.parse(record));
+}
+
+export function serializeGovernedWorkItemDocument(item: GovernedWorkItem): string {
+  const validated = governedWorkItemSchema.parse(item);
+  return stringifyFrontmatterDocument(validated.frontmatter, validated.body);
+}
+
+export function serializeOwnerApprovalDocument(approval: OwnerApprovalArtifact): string {
+  return stringifyYamlDocument(ownerApprovalArtifactSchema.parse(approval));
 }

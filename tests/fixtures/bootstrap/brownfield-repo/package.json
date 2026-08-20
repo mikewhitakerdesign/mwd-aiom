@@ -1,0 +1,6 @@
+{
+  "name": "brownfield-fixture",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A controlled fixture representing an existing repository with code, tooling, and docs but no AIOM state, used to test Bootstrap's inspect-before-ask behavior (Initiative 8, Synthetic Scenario D)."
+}
