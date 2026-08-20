@@ -1,0 +1,48 @@
+seed_version: "0.1"
+bundles:
+  - bundle_id: external-action-integration
+    relevant: "true"
+    provenance: owner-confirmed
+  - bundle_id: repository-versioned-delivery
+    relevant: "true"
+    provenance: directly-inspected
+  - bundle_id: software-engineering
+    relevant: "true"
+    provenance: directly-inspected
+  - bundle_id: content-publication
+    relevant: "true"
+    provenance: owner-confirmed
+    rationale: announcement copy has its own review/publish lifecycle
+  - bundle_id: web-ui-experience
+    relevant: "false"
+    provenance: owner-confirmed
+  - bundle_id: persistent-operation-monitoring
+    relevant: "false"
+    provenance: owner-confirmed
+capabilities:
+  - capability_id: external-action-execution
+    status: required
+    provenance: owner-confirmed
+    rationale: publishing to the public blog is the point of this project
+    reconsideration_trigger: reconsider if the publishing target changes
+  - capability_id: repository-inspection
+    status: required
+    provenance: directly-inspected
+  - capability_id: bounded-delivery
+    status: required
+    provenance: owner-confirmed
+  - capability_id: software-implementation
+    status: required
+    provenance: owner-confirmed
+  - capability_id: research-discovery
+    status: recommended
+    provenance: ai-inferred
+  - capability_id: deterministic-validation
+    status: recommended
+    provenance: ai-inferred
+  - capability_id: ui-implementation
+    status: not-applicable
+    provenance: owner-confirmed
+  - capability_id: persistent-continuation
+    status: not-applicable
+    provenance: owner-confirmed

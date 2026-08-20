@@ -22,16 +22,27 @@ project can depend on, independent of runtime or provider.
   ([`capabilities/bundles.md`](./capabilities/bundles.md)) and capability
   ([`capabilities/capabilities.md`](./capabilities/capabilities.md))
   definitions live.
+- [`templates/`](./templates/README.md) — reusable, provider-neutral
+  templates and TypeScript/Zod schemas for the four durable,
+  project-local state artifacts (Project Profile, Capability Activation
+  Record, Governed Work Item, Owner Approval Artifact) that a future
+  Project Bootstrap will create under a consuming project's own `.aiom/`
+  directory. See [`templates/README.md`](./templates/README.md). The
+  schemas and parsing layer live in `src/kernel/` at the repository root,
+  not under `seed/`, since they are executable code rather than Seed
+  content a consuming project copies.
 
 ## What is not implemented yet
 
-This Seed defines Core, safeguards, and the Capability Architecture only.
-It does not yet include Project Bootstrap, Bootstrap Ready logic, Project
-Profile, `.aiom/`, capability activation records, Governed Work Item
-templates, Owner Approval Artifact templates, schemas, parser or validator
-logic, transition logic, a Runtime Probe, runtime adapters, or any
-runtime-specific (e.g. Claude Code) instructions. See the repository root
-[`README.md`](../README.md) for the full implementation roadmap.
+This Seed defines Core, safeguards, the Capability Architecture, and the
+project-state artifact templates/schemas only. It does not yet include
+Project Bootstrap, Bootstrap Ready validation logic, a full validator,
+Transition Gate, cross-file referential integrity checks, a Runtime
+Probe, runtime adapters, or any runtime-specific (e.g. Claude Code)
+instructions. `.aiom/` is not created as live state anywhere in this
+repository — the templates under `templates/` and the fixtures under
+`tests/fixtures/` are the only instances that exist. See the repository
+root [`README.md`](../README.md) for the full implementation roadmap.
 
 ## Relationship to mwd-aiom
 

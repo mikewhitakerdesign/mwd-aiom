@@ -1,0 +1,48 @@
+seed_version: "0.1"
+bundles:
+  - bundle_id: content-publication
+    relevant: "true"
+    rationale: output is a written research report
+    provenance: owner-confirmed
+  - bundle_id: repository-versioned-delivery
+    relevant: "false"
+    provenance: owner-confirmed
+  - bundle_id: software-engineering
+    relevant: "false"
+    provenance: owner-confirmed
+  - bundle_id: web-ui-experience
+    relevant: "false"
+    provenance: owner-confirmed
+  - bundle_id: external-action-integration
+    relevant: "false"
+    provenance: owner-confirmed
+  - bundle_id: persistent-operation-monitoring
+    relevant: "false"
+    provenance: owner-confirmed
+capabilities:
+  - capability_id: research-discovery
+    status: required
+    provenance: owner-confirmed
+    rationale: the entire work item is a research task
+  - capability_id: repository-inspection
+    status: not-applicable
+    provenance: owner-confirmed
+    rationale: no repository exists for this effort
+  - capability_id: bounded-delivery
+    status: not-applicable
+    provenance: owner-confirmed
+  - capability_id: software-implementation
+    status: not-applicable
+    provenance: owner-confirmed
+  - capability_id: deterministic-validation
+    status: not-applicable
+    provenance: owner-confirmed
+  - capability_id: ui-implementation
+    status: not-applicable
+    provenance: owner-confirmed
+  - capability_id: external-action-execution
+    status: not-applicable
+    provenance: owner-confirmed
+  - capability_id: persistent-continuation
+    status: not-applicable
+    provenance: owner-confirmed

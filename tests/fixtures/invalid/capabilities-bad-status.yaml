@@ -1,0 +1,6 @@
+seed_version: "0.1"
+bundles: []
+capabilities:
+  - capability_id: external-action-execution
+    status: approved
+    provenance: owner-confirmed

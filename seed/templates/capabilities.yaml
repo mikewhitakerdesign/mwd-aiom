@@ -1,0 +1,26 @@
+# Capability Activation Record template (AIOM Seed v0.1)
+#
+# One entry per Capability Bundle whose relevance has been assessed, and one
+# entry per Atomic Capability whose activation has been decided. Bundle and
+# capability IDs must match the stable IDs defined in
+# seed/capabilities/bundles.md and seed/capabilities/capabilities.md — this
+# record references them, it does not redefine them.
+#
+# Relevance, activation, runtime availability, and authorization remain
+# distinct (see seed/capabilities/README.md): a `required` status below
+# means this project has decided the capability is turned on, never that a
+# specific consequential use of it has been authorized by the Owner.
+seed_version: "0.1"
+bundles:
+  # Replace example-bundle-id with a real bundle_id from
+  # seed/capabilities/bundles.md, e.g. "repository-versioned-delivery".
+  - bundle_id: example-bundle-id
+    relevant: unknown
+    rationale: replace with why this bundle might apply, or why relevance is still unknown
+capabilities:
+  # Replace example-capability-id with a real capability_id from
+  # seed/capabilities/capabilities.md, e.g. "research-discovery".
+  - capability_id: example-capability-id
+    status: deferred
+    provenance: unknown
+    rationale: replace with why this capability's activation is being deferred

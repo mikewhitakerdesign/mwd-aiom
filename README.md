@@ -29,13 +29,19 @@ At this stage (**AIOM Core Seed Foundation**), this repository contains:
 - The Capability Architecture (`seed/capabilities/`) — reusable,
   provider-neutral Capability Bundle and Atomic Capability definitions;
   see `seed/capabilities/README.md`
+- Project State Templates & Schemas (`seed/templates/`, `src/kernel/`) —
+  reusable templates, TypeScript/Zod schemas, and a minimal
+  Markdown-frontmatter/YAML parsing layer for the four durable
+  project-local artifact types: Project Profile, Capability Activation
+  Record, Governed Work Item, and Owner Approval Artifact; see
+  `seed/templates/README.md`
 
-It does **not** yet contain `.aiom/` project-state templates, schemas, a
-validator, or a Runtime Probe. Capability relevance, activation, runtime
-availability, and authorization remain distinct — this repository defines
-what capabilities are, not which are turned on for a given project.
-Nothing here should be read as an implementation of those until a later
-initiative adds it.
+It does **not** yet contain a validator, Transition Gate, or Runtime
+Probe, and no project — including this one — has a live `.aiom/`
+directory. Capability relevance, activation, runtime availability, and
+authorization remain distinct — this repository defines what capabilities
+are, not which are turned on for a given project. Nothing here should be
+read as an implementation of those until a later initiative adds it.
 
 ## What this is not
 
@@ -55,11 +61,13 @@ implemented**:
 AIOM Core
   → AIOM Core Seed              (foundation implemented — see seed/)
   → Project Bootstrap           (not yet implemented)
-  → Project Profile             (not yet implemented)
+  → Project Profile             (template + schema implemented — see seed/templates/)
   → Capability Bundles          (definitions implemented — see seed/capabilities/)
   → Atomic Capabilities         (definitions implemented — see seed/capabilities/)
-  → Governed Work                (not yet implemented)
-  → Validation / Approval / Runtime  (not yet implemented)
+  → Capability Activation Record (template + schema implemented — see seed/templates/)
+  → Governed Work                (template + schema implemented — see seed/templates/)
+  → Owner Approval Artifact      (template + schema implemented — see seed/templates/)
+  → Validation / Transition Gate / Runtime Probe  (not yet implemented)
   → Project Action / Handoff    (not yet implemented)
 ```
 
@@ -74,10 +82,9 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 3 — Capability
-  Architecture — complete**
-- Next roadmap increment: **Initiative 4 — Project State Templates &
-  Schemas**
+- Current implementation progress: **Initiative 4 — Project State
+  Templates & Schemas — complete**
+- Next roadmap increment: **Initiative 5 — Kernel Validation**
 
 ## Implementation roadmap
 
@@ -87,7 +94,7 @@ implementation evidence warrants):
 1. Repository Foundation — done
 2. AIOM Core Seed Foundation — done
 3. Capability Architecture — done
-4. Project State Templates & Schemas
+4. Project State Templates & Schemas — done
 5. Kernel Validation
 6. Transition & Approval Kernel
 7. Runtime Probe + Runtime-Neutral Orchestration
