@@ -58,4 +58,11 @@ project-neutral by design.
 - **No stale runtime truth.** Where a `runtime_requirement*` field exists
   on the Project Profile or a Work Item, it records a stable, abstract
   requirement (e.g. "requires repository-write"), never a probe result —
-  a future Runtime Probe is a separate, not-yet-implemented mechanism.
+  the Runtime Probe (`src/kernel/runtime/`) produces ephemeral evidence
+  per evaluation, kept separate from this durable field, not written back
+  into it. These free-text fields remain unconstrained prose by design;
+  only a value that happens to equal one of the Runtime Probe's bounded
+  Runtime Requirement IDs (see
+  [`../../src/kernel/runtime/requirements.ts`](../../src/kernel/runtime/requirements.ts))
+  is mechanically comparable against evidence — see the Initiative 7
+  completion report for why this was not tightened into an enum.

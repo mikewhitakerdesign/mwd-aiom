@@ -36,6 +36,21 @@ Each initiative's instructions required an explicit report of whether
 repository context was sufficient without prior conversation. Across all
 three runs, none reported a material gap in the initial reconstruction.
 
+- **Initiative 7 — Runtime Probe + Runtime-Neutral Orchestration**: a
+  fourth independent fresh session, facing a repository with two more
+  kernel modules than Initiative 4 faced (`src/kernel/validation/`,
+  `src/kernel/transition/`) and six Observations rather than one,
+  correctly reconstructed the exact runtime-indeterminate seam Initiative
+  6 had left open (`src/kernel/transition/capability.ts`'s unconditional
+  `runtime-prerequisite-unverified` issue) from repository content alone
+  — without that seam being named by file or line number anywhere in the
+  Initiative 7 brief itself — and reported no material gap. This is worth
+  recording as a genuinely new data point, not a repeat of the prior
+  three: it is the first initiative whose inspection task required
+  synthesizing a specific mechanical seam across two prior initiatives'
+  implementation (not just their existence) before any new code could be
+  written correctly.
+
 ## Current implication
 
 Repository-grounded durable context — `AGENTS.md`, the root `README.md`

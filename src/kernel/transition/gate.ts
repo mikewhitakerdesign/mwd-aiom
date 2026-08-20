@@ -1,5 +1,6 @@
 import type { OwnerApprovalArtifact } from '../schemas/approval.js';
 import type { GovernedWorkItem } from '../schemas/work-item.js';
+import type { RuntimeEvidenceMap } from '../runtime/index.js';
 import { loadCapabilityIndex, type CapabilityIndex } from '../validation/capability-index.js';
 import { loadProjectState } from '../validation/project-state.js';
 import { validateProjectState } from '../validation/validate-project.js';
@@ -25,12 +26,21 @@ import {
  * (validateProjectState, reused unchanged from Initiative 5) reports any
  * error, this function reports that prerequisite failure and stops, rather
  * than attempting interpretive recovery over structurally invalid state.
+ *
+ * `runtimeEvidence` is an optional, caller-supplied, ephemeral Runtime
+ * Evidence map (Initiative 7) — this function never probes the runtime
+ * itself, and omitting it reproduces Initiative 6's exact original
+ * behavior (a required capability's runtime prerequisite stays
+ * indeterminate). Supplying it lets an already-required capability's
+ * runtime prerequisite resolve deterministically — see
+ * evaluateCapabilityRequirement in capability.ts.
  */
 export function evaluateTransition(
   dir: string,
   transition: ProposedTransition,
   index: CapabilityIndex = loadCapabilityIndex(),
   now: Date = new Date(),
+  runtimeEvidence?: RuntimeEvidenceMap,
 ): TransitionGateResult {
   const baseValidation = validateProjectState(dir, index);
   if (baseValidation.errors.length > 0) {
@@ -130,7 +140,9 @@ export function evaluateTransition(
 
   const capabilityId = transition.capabilityId ?? workItem.frontmatter.active_capability;
   if (capabilityId) {
-    issues.push(...evaluateCapabilityRequirement(capabilityId, index, capabilityActivation));
+    issues.push(
+      ...evaluateCapabilityRequirement(capabilityId, index, capabilityActivation, runtimeEvidence),
+    );
   }
 
   if (rule.authorityBoundary) {

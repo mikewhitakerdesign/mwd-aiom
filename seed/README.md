@@ -68,16 +68,52 @@ mutates project state — it answers only whether a transition is
 mechanically eligible, mechanically blocked, or indeterminate given
 already-recorded state.
 
+## What currently exists (continued): Runtime Probe
+
+`src/kernel/runtime/` produces structured, evidence-backed Runtime
+Evidence — `available` / `unavailable` / `unknown` per Runtime Requirement
+ID (see [`requirements.ts`](../src/kernel/runtime/requirements.ts) for the
+bounded, provider-neutral vocabulary: `filesystem-read`,
+`filesystem-write`, `process-execution`, `repository-read`,
+`repository-write`, `network-access`), produced by any adapter
+implementing the `RuntimeAdapter` interface. Provider-specific inspection
+lives entirely behind that interface — Core/kernel consumers depend only
+on `RuntimeAdapter` and `RuntimeEvidence`, never on which adapter produced
+them. The bounded, real Claude Code / Node.js adapter
+(`src/kernel/runtime/adapters/node.ts`) performs only read-only,
+version/existence, or temporary/local bounded checks; it never pushes,
+deploys, or takes any other consequential external action just to prove a
+capability, and reports `unknown` rather than guessing wherever a
+mechanical check would itself require a side effect (e.g.
+`repository-write`, `network-access`). Evidence is ephemeral — assembled
+per evaluation and never written into durable project state; a Runtime
+Probe result is not a fifth durable artifact.
+
+## What currently exists (continued): Runtime-Neutral Orchestration foundation
+
+`src/kernel/orchestration/` is a read-only function
+(`orchestrate()`) that composes Kernel Validation, the Transition Gate,
+and, when supplied, Runtime Evidence into one of a small set of governed
+dispositions (`blocked-by-invalid-state`, `blocked-by-unmet-prerequisite`,
+`awaiting-owner-authorization`, `blocked-by-runtime`, `runtime-unknown`,
+`requires-qualitative-judgment`, `ready-for-governed-execution`). It
+duplicates none of the logic in the modules it composes — every fact in
+its output is read directly off the `TransitionGateResult` it wraps. It
+never grants authority, never selects work on the Owner's behalf, and
+never executes the proposed transition: `ready-for-governed-execution`
+means only that no deterministic prerequisite this repository currently
+checks blocks the transition, never that the transition should be taken.
+
 ## What is not implemented yet
 
 This Seed defines Core, safeguards, the Capability Architecture, the
 project-state artifact templates/schemas, a deterministic validator over
-that schema layer, and a read-only Transition Gate. It does not yet
-include Project Bootstrap, a Runtime Probe, runtime adapters, or any
-runtime-specific (e.g. Claude Code) instructions. `.aiom/` is not created
-as live state anywhere in this repository — the templates under
-`templates/` and the fixtures under `tests/fixtures/` are the only
-instances that exist. See the repository
+that schema layer, a read-only Transition Gate, a Runtime Probe, and a
+Runtime-Neutral Orchestration foundation. It does not yet include Project
+Bootstrap or any runtime-specific (e.g. Claude Code) project-instruction
+templates. `.aiom/` is not created as live state anywhere in this
+repository — the templates under `templates/` and the fixtures under
+`tests/fixtures/` are the only instances that exist. See the repository
 root [`README.md`](../README.md) for the full implementation roadmap.
 
 ## Relationship to mwd-aiom

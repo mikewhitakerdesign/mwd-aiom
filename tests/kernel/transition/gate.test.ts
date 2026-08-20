@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { loadCapabilityIndex } from '../../../src/kernel/validation/capability-index.js';
 import { evaluateTransition } from '../../../src/kernel/transition/gate.js';
 import type { ProposedTransition } from '../../../src/kernel/transition/types.js';
+import { runtimeEvidence, type RuntimeEvidenceMap } from '../../../src/kernel/runtime/evidence.js';
 
 const fixturesRoot = fileURLToPath(new URL('../../fixtures/', import.meta.url));
 const index = loadCapabilityIndex();
@@ -184,6 +185,81 @@ describe('Transition Gate — K: runtime prerequisite required, no Runtime Probe
     expect(result.outcome).toBe('indeterminate');
     expect(result.issues).toContainEqual(
       expect.objectContaining({ code: 'runtime-prerequisite-unverified', severity: 'indeterminate' }),
+    );
+  });
+});
+
+describe('Transition Gate — Initiative 7: Runtime Evidence resolves the runtime-prerequisite seam', () => {
+  const runtimeDir = fixtureDir('project-states/runtime-orchestration');
+  const runtimeTransition: ProposedTransition = {
+    workItemId: 'wi-runtime-authorized',
+    fromStage: 'approval',
+    toStage: 'delivery',
+    action: 'notify the external monitoring endpoint',
+  };
+  const RUNTIME_NOW = new Date('2026-08-20T00:00:00Z');
+
+  it('runtime requirement known + no evidence supplied: stays indeterminate (unchanged Initiative 6 behavior)', () => {
+    const result = evaluateTransition(runtimeDir, runtimeTransition, index, RUNTIME_NOW);
+    expect(result.outcome).toBe('indeterminate');
+    expect(result.issues).toContainEqual(
+      expect.objectContaining({
+        code: 'runtime-prerequisite-unverified',
+        severity: 'indeterminate',
+        requirementId: 'network-access',
+      }),
+    );
+  });
+
+  it('runtime requirement known + evidence available: stops being indeterminate on that dimension', () => {
+    const evidence: RuntimeEvidenceMap = new Map([
+      ['network-access', runtimeEvidence('network-access', 'available', 'test', RUNTIME_NOW)],
+    ]);
+    const result = evaluateTransition(runtimeDir, runtimeTransition, index, RUNTIME_NOW, evidence);
+    expect(result.outcome).toBe('mechanically-eligible');
+    expect(result.issues).toEqual([]);
+  });
+
+  it('runtime requirement known + evidence unavailable: mechanically blocked, not indeterminate', () => {
+    const evidence: RuntimeEvidenceMap = new Map([
+      ['network-access', runtimeEvidence('network-access', 'unavailable', 'test', RUNTIME_NOW)],
+    ]);
+    const result = evaluateTransition(runtimeDir, runtimeTransition, index, RUNTIME_NOW, evidence);
+    expect(result.outcome).toBe('mechanically-blocked');
+    expect(result.issues).toContainEqual(
+      expect.objectContaining({
+        code: 'runtime-requirement-unavailable',
+        severity: 'error',
+        requirementId: 'network-access',
+      }),
+    );
+  });
+
+  it('runtime requirement known + evidence unknown: remains indeterminate', () => {
+    const evidence: RuntimeEvidenceMap = new Map([
+      ['network-access', runtimeEvidence('network-access', 'unknown', 'test', RUNTIME_NOW)],
+    ]);
+    const result = evaluateTransition(runtimeDir, runtimeTransition, index, RUNTIME_NOW, evidence);
+    expect(result.outcome).toBe('indeterminate');
+    expect(result.issues).toContainEqual(
+      expect.objectContaining({ code: 'runtime-prerequisite-unverified', severity: 'indeterminate' }),
+    );
+  });
+
+  it('runtime availability never substitutes for missing Owner authorization', () => {
+    const evidence: RuntimeEvidenceMap = new Map([
+      ['network-access', runtimeEvidence('network-access', 'available', 'test', RUNTIME_NOW)],
+    ]);
+    const result = evaluateTransition(
+      runtimeDir,
+      { ...runtimeTransition, workItemId: 'wi-no-approval' },
+      index,
+      RUNTIME_NOW,
+      evidence,
+    );
+    expect(result.outcome).toBe('mechanically-blocked');
+    expect(result.issues).toContainEqual(
+      expect.objectContaining({ code: 'no-covering-approval-found' }),
     );
   });
 });
