@@ -51,6 +51,7 @@ export const signalStatusSchema = z.enum([
   'unknown',
   'not-applicable',
 ]);
+export type SignalStatus = z.infer<typeof signalStatusSchema>;
 
 export const signalValueSchema = z.object({
   value: signalStatusSchema,
@@ -66,6 +67,7 @@ export type SignalValue = z.infer<typeof signalValueSchema>;
  * "not-applicable" would never be a meaningful value for them.
  */
 export const confirmationStatusSchema = z.enum(['yes', 'no', 'unresolved']);
+export type ConfirmationStatus = z.infer<typeof confirmationStatusSchema>;
 
 export const confirmationValueSchema = z.object({
   value: confirmationStatusSchema,

@@ -1,13 +1,11 @@
-import type { z } from 'zod';
-import { workItemStageSchema } from '../schemas/work-item.js';
-
 /**
- * Re-derived from the Initiative 4 Work Item schema rather than duplicated,
- * so the Transition Gate's rule table cannot silently drift from the
- * bounded, proving-only stage vocabulary it governs (see
- * seed/templates/README.md).
+ * Re-exported from the Initiative 4 Work Item schema (now that it exports
+ * this type directly, added in Initiative 8) rather than duplicated, so the
+ * Transition Gate's rule table cannot silently drift from the bounded,
+ * proving-only stage vocabulary it governs (see seed/templates/README.md).
  */
-export type WorkItemStage = z.infer<typeof workItemStageSchema>;
+import type { WorkItemStage } from '../schemas/work-item.js';
+export type { WorkItemStage };
 
 /**
  * The smallest structured representation of one proposed transition — an

@@ -14,6 +14,7 @@ export const workItemStageSchema = z.enum([
   'delivery',
   'handoff',
 ]);
+export type WorkItemStage = z.infer<typeof workItemStageSchema>;
 
 export const workItemStatusSchema = z.enum([
   'active',
@@ -34,12 +35,14 @@ export const responsibilitySchema = z.enum([
   'orchestrator',
   'specialist-capability',
 ]);
+export type Responsibility = z.infer<typeof responsibilitySchema>;
 
 export const authorityRequirementSchema = z.enum([
   'none',
   'owner-authorization-required',
   'owner-authorization-satisfied',
 ]);
+export type AuthorityRequirement = z.infer<typeof authorityRequirementSchema>;
 
 export const validationStateSchema = z.enum([
   'not-started',

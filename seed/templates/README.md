@@ -11,6 +11,21 @@ a consuming project's own `.aiom/` directory:
 - [`work-item.md`](./work-item.md) → `.aiom/work/<work-item-id>.md`
 - [`approval.yaml`](./approval.yaml) → `.aiom/approvals/<approval-id>.yaml`
 
+Two further templates exist alongside these but are a different kind of
+thing — project-facing *runtime-discovery instructions*, not durable
+project state, and so do not parse against a `src/kernel/schemas/`
+artifact schema:
+
+- [`project-agents.md`](./project-agents.md) → a Bootstrap-managed
+  project's own `AGENTS.md`
+- [`project-claude.md`](./project-claude.md) → a Bootstrap-managed
+  project's own `CLAUDE.md`
+
+`src/kernel/bootstrap/seed-assets.ts` materializes these two (only when
+absent, never overwriting an existing brownfield copy) alongside the four
+state artifacts above — see [`../bootstrap.md`](../bootstrap.md) and
+[`../README.md`](../README.md).
+
 Each template parses and validates against its schema in
 `src/kernel/schemas/`, but is intentionally incomplete: string fields wrap
 placeholder prose in `<angle brackets>`; structured fields (enums,

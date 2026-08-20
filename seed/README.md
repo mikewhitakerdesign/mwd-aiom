@@ -8,6 +8,11 @@ project can depend on, independent of runtime or provider.
 
 ## What currently exists
 
+- [`bootstrap.md`](./bootstrap.md) — Project Bootstrap Process Guidance:
+  provider-neutral guidance for whichever reasoning runtime performs the
+  qualitative half of Bootstrap (Claude Code, another AI runtime, or a
+  human) — see "What currently exists (continued): Project Bootstrap"
+  below for the deterministic mechanics it feeds.
 - [`core.md`](./core.md) — the AIOM Core reference: what Core is, what it
   governs, Owner authority, operating principles, and responsibility
   boundaries.
@@ -104,17 +109,51 @@ never executes the proposed transition: `ready-for-governed-execution`
 means only that no deterministic prerequisite this repository currently
 checks blocks the transition, never that the transition should be taken.
 
+## What currently exists (continued): Project Bootstrap
+
+`src/kernel/bootstrap/` (deterministic mechanics) and
+[`bootstrap.md`](./bootstrap.md) (process guidance for the reasoning role)
+together are Project Bootstrap v0.1: the discovery-and-configuration
+process that turns incomplete Owner/project context into enough
+trustworthy AIOM state to identify the Next Governed Action. Bootstrap
+does not embed an LLM call — `src/kernel/bootstrap/types.ts`'s
+`BootstrapReasoningDecisions` is a provider-neutral reasoning contract a
+human, Claude Code, or another capable AI runtime fills in; deterministic
+Bootstrap code (`runBootstrap()`) validates those decisions against the
+existing schema layer, applies a hard-coded guardrail that never lets the
+two mandatory consequence confirmations resolve away from `unresolved` on
+anything but Owner provenance, determines whether durable state is
+justified, and — only when a caller supplies an explicit, controlled
+`materializeTo` destination — materializes a `.aiom`-shaped project-state
+directory, a copy of the reusable Seed documents a consuming project
+needs (`core.md`, `safeguards.md`, `capabilities/bundles.md`,
+`capabilities/capabilities.md`, under that project's own `.aiom/seed/`),
+and a generated project AGENTS.md/CLAUDE.md pointer (see
+`templates/project-agents.md` / `templates/project-claude.md` below).
+Bundle relevance and capability activation remain reasoned outcomes
+recorded through this contract, never re-derived by deterministic
+validation; capability activation is never treated as authorization; and
+Bootstrap constructs only a `pending` Owner Approval Artifact when it
+surfaces an authority boundary — it never fabricates an `approved` one.
+Bootstrap determines governed project configuration, not the product
+itself: it does not generate application source code, and it does not
+select a framework or stack.
+
 ## What is not implemented yet
 
 This Seed defines Core, safeguards, the Capability Architecture, the
 project-state artifact templates/schemas, a deterministic validator over
-that schema layer, a read-only Transition Gate, a Runtime Probe, and a
-Runtime-Neutral Orchestration foundation. It does not yet include Project
-Bootstrap or any runtime-specific (e.g. Claude Code) project-instruction
-templates. `.aiom/` is not created as live state anywhere in this
-repository — the templates under `templates/` and the fixtures under
-`tests/fixtures/` are the only instances that exist. See the repository
-root [`README.md`](../README.md) for the full implementation roadmap.
+that schema layer, a read-only Transition Gate, a Runtime Probe, a
+Runtime-Neutral Orchestration foundation, and Project Bootstrap v0.1.
+`.aiom/` is not created as live state anywhere in `mwd-aiom` itself —
+Bootstrap materializes it only into a caller-supplied, controlled
+synthetic/test destination; the templates under `templates/` and the
+fixtures under `tests/fixtures/` remain the only in-repository instances.
+Bootstrap's reasoning contract has been exercised only with
+fixture-supplied decisions standing in for a reasoning runtime, not yet
+against a real project or a genuinely separate live session driving
+Bootstrap end-to-end. See the repository root
+[`README.md`](../README.md) for the full implementation roadmap.
 
 ## Relationship to mwd-aiom
 
@@ -128,8 +167,13 @@ itself, not the projects that will eventually depend on the Seed.
 
 ## How consuming projects will use this
 
-A future Project Bootstrap initiative will derive or adapt a consuming
-project's own runtime instructions (its `AGENTS.md`, `CLAUDE.md`, etc.)
-from this Seed. Consuming projects should not simply copy this
-repository's root `AGENTS.md` / `CLAUDE.md` unchanged — those files govern
-work on `mwd-aiom` itself, not on a project built with AIOM.
+Project Bootstrap materializes a consuming project's own runtime
+instructions from `templates/project-agents.md` and
+`templates/project-claude.md` — thin, generated pointers to that
+project's own `.aiom/` state and `.aiom/seed/` guidance, not a copy of
+this repository's root `AGENTS.md` / `CLAUDE.md`, which govern work on
+`mwd-aiom` itself, not on a project built with AIOM. `mwd-aiom` is not yet
+published as an installable package (Initiative 8 does not change that):
+those generated files say so honestly, so a runtime working on a
+Bootstrap-managed project without access to `mwd-aiom` knows to reason
+from `.aiom/` state directly rather than assume automated validation ran.

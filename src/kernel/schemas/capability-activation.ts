@@ -31,6 +31,7 @@ export const capabilityActivationStatusSchema = z.enum([
   'not-applicable',
   'deferred',
 ]);
+export type CapabilityActivationStatus = z.infer<typeof capabilityActivationStatusSchema>;
 
 export const capabilityActivationEntrySchema = z.object({
   capability_id: stableIdSchema,
