@@ -1,0 +1,11 @@
+id: appr-release-post
+seed_version: "0.1"
+related_work_item_id: first-release-post
+target_context: publishing the first automated release announcement to the public blog
+requested_decision: authorize publishing the drafted announcement copy to the public blog
+authorized_action: publish first-release-post's drafted content to the public blog
+mode: one-time
+scope: this single blog post only, not a standing policy for future release announcements
+owner: Sam (Growth Lead)
+status: pending
+provenance: workflow-discovered

@@ -1,0 +1,4 @@
+seed_version: "0.1"
+bundles: [
+  - this is not valid YAML
+capabilities:

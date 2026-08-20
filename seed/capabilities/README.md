@@ -15,18 +15,21 @@ project.
 ## The chain this fits into
 
 ```
-Project Profile                  (not yet implemented)
+Project Profile                  (template + schema implemented — see seed/templates/)
   → Capability Bundle relevance  (bundles defined here; relevance decision not yet implemented)
   → Atomic Capability activation (capabilities defined here; activation not yet implemented)
   → Standards / Gates            (referenced here; enforcement not yet implemented)
   → Adapters / Runtime           (not yet implemented)
-  → Project Configuration / Governed Work  (not yet implemented)
+  → Project Configuration / Governed Work  (template + schema implemented — see seed/templates/)
 ```
 
-This initiative implements the two boxes above that are reusable and
+This initiative implemented the two boxes above that are reusable and
 provider-neutral: **Capability Bundle** definitions and **Atomic
-Capability** definitions. Everything else in the chain remains future
-work — see "What is not implemented yet" below.
+Capability** definitions. A later initiative (Project State Templates &
+Schemas) added the durable *shape* a Project Profile and a Capability
+Activation Record take — see [`../templates/README.md`](../templates/README.md)
+— without implementing the relevance/activation *decision logic* itself,
+which remains future work — see "What is not implemented yet" below.
 
 ## Relevance, activation, runtime availability, and authorization are distinct
 
@@ -83,7 +86,10 @@ enforced — only that Capability definitions may reference them coherently.
 
 ## What is not implemented yet
 
-Project Profile signals detection, Capability activation records and
-logic, Standards/Gates enforcement mechanisms, runtime adapters/bindings,
-schemas, a validator, and Project Bootstrap all remain future work. See
-the repository root [`README.md`](../../README.md) for the roadmap.
+Project Profile signal *detection*, Capability relevance/activation
+*decision logic*, Standards/Gates enforcement mechanisms, runtime
+adapters/bindings, a full validator, and Project Bootstrap all remain
+future work. (The durable *shapes* those decisions get recorded in —
+Project Profile and Capability Activation Record templates/schemas — now
+exist; see [`../templates/README.md`](../templates/README.md).) See the
+repository root [`README.md`](../../README.md) for the roadmap.

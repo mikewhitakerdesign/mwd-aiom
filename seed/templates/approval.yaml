@@ -1,0 +1,14 @@
+# Owner Approval Artifact template (AIOM Seed v0.1)
+#
+# Replace example-approval with a real, stable, kebab-case approval ID.
+# This artifact records authorization — it is not an ADR and should not
+# carry persuasive/explanatory prose beyond what the fields below need.
+id: example-approval
+seed_version: "0.1"
+target_context: replace with the work item, project area, or decision this approval concerns
+requested_decision: replace with the specific decision being requested of the Owner
+mode: one-time
+scope: replace with what this authorization covers, and what it does not
+owner: replace with the Owner's identity
+status: pending
+provenance: unknown

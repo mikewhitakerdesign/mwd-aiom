@@ -1,0 +1,48 @@
+seed_version: "0.1"
+bundles:
+  - bundle_id: repository-versioned-delivery
+    relevant: "true"
+    provenance: directly-inspected
+  - bundle_id: software-engineering
+    relevant: "true"
+    provenance: directly-inspected
+  - bundle_id: web-ui-experience
+    relevant: "true"
+    provenance: directly-inspected
+  - bundle_id: content-publication
+    relevant: "false"
+    provenance: owner-confirmed
+  - bundle_id: external-action-integration
+    relevant: "false"
+    provenance: owner-confirmed
+  - bundle_id: persistent-operation-monitoring
+    relevant: "false"
+    provenance: owner-confirmed
+capabilities:
+  - capability_id: repository-inspection
+    status: required
+    provenance: directly-inspected
+  - capability_id: bounded-delivery
+    status: required
+    provenance: owner-confirmed
+    rationale: change must land through a reviewable branch/PR
+  - capability_id: software-implementation
+    status: required
+    provenance: owner-confirmed
+  - capability_id: deterministic-validation
+    status: required
+    provenance: directly-inspected
+    rationale: lint/typecheck/test pipeline already exists in this repository
+  - capability_id: ui-implementation
+    status: required
+    provenance: owner-confirmed
+  - capability_id: research-discovery
+    status: recommended
+    provenance: ai-inferred
+    rationale: understanding existing dashboard code before changing it is expected but not mandatory to declare separately
+  - capability_id: external-action-execution
+    status: not-applicable
+    provenance: owner-confirmed
+  - capability_id: persistent-continuation
+    status: not-applicable
+    provenance: owner-confirmed

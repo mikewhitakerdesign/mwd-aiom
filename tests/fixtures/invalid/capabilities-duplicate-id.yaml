@@ -1,0 +1,11 @@
+seed_version: "0.1"
+bundles:
+  - bundle_id: software-engineering
+    relevant: "true"
+capabilities:
+  - capability_id: research-discovery
+    status: required
+    provenance: owner-confirmed
+  - capability_id: research-discovery
+    status: deferred
+    provenance: owner-confirmed

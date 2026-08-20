@@ -1,0 +1,9 @@
+id: approved-without-decision-at
+seed_version: "0.1"
+target_context: intentionally invalid fixture
+requested_decision: authorize the thing
+mode: one-time
+scope: this fixture only
+owner: Test Owner
+status: approved
+provenance: owner-stated
