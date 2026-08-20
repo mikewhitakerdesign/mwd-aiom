@@ -1,0 +1,24 @@
+{
+  "name": "mwd-aiom",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Source repository for the AIOM Core Seed and Minimal Executable Kernel — a human-governed, AI-assisted operating architecture for bootstrapping, governing, validating, resuming, and evolving digital-product and automation work.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "packageManager": "pnpm@11.17.0",
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "validate": "pnpm lint && pnpm typecheck && pnpm test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
+    "vitest": "^2.1.8"
+  }
+}
