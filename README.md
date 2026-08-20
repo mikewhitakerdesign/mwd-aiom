@@ -14,21 +14,23 @@ itself a finished product.
 
 ## What this repository contains
 
-At this stage (**Repository Foundation**), this repository contains only
-the repository, tooling, and governance scaffolding needed to do further
-work safely:
+At this stage (**AIOM Core Seed Foundation**), this repository contains:
 
 - Provider-neutral repository guidance (`AGENTS.md`) and a Claude
   Code-specific pointer (`CLAUDE.md`)
 - A TypeScript / Node.js / pnpm tooling baseline (lint, typecheck, test)
 - A decisions structure (`docs/decisions/`) for this repository's own
-  future ADRs, observations, and journal entries
+  ADRs, observations, and journal entries
 - Minimal CI that runs the same validation available locally
+- The AIOM Core Seed foundation (`seed/`) — a reusable, provider-neutral
+  reference for AIOM Core's responsibilities, Owner authority, operating
+  principles, responsibility boundaries, and a safeguard foundation; see
+  `seed/README.md`
 
-It does **not** yet contain the AIOM Core Seed, Capability Bundles, Atomic
-Capabilities, `.aiom/` project-state templates, schemas, a validator, or a
-Runtime Probe. Nothing here should be read as an implementation of those
-until a later initiative adds it.
+It does **not** yet contain Capability Bundles, Atomic Capabilities,
+`.aiom/` project-state templates, schemas, a validator, or a Runtime
+Probe. Nothing here should be read as an implementation of those until a
+later initiative adds it.
 
 ## What this is not
 
@@ -46,7 +48,7 @@ implemented**:
 
 ```
 AIOM Core
-  → AIOM Core Seed              (not yet implemented)
+  → AIOM Core Seed              (foundation implemented — see seed/)
   → Project Bootstrap           (not yet implemented)
   → Project Profile             (not yet implemented)
   → Capability Bundles          (not yet implemented)
@@ -66,15 +68,18 @@ mechanisms; individual projects consume them.
 
 ## Current status
 
-`v0.1 — Repository Foundation`
+- AIOM/repository implementation version: **experimental v0.1**
+- Current implementation progress: **Initiative 2 — AIOM Core Seed
+  Foundation — complete**
+- Next roadmap increment: **Initiative 3 — Capability Architecture**
 
 ## Implementation roadmap
 
 Planned bounded increments (this sequence may split further as
 implementation evidence warrants):
 
-1. Repository Foundation
-2. AIOM Core Seed Foundation
+1. Repository Foundation — done
+2. AIOM Core Seed Foundation — done
 3. Capability Architecture
 4. Project State Templates & Schemas
 5. Kernel Validation
