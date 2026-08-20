@@ -1,0 +1,11 @@
+id: appr-owner-expired
+seed_version: "0.1"
+related_work_item_id: wi-owner-expired
+target_context: fixture approval for Transition Gate scenario D (expired)
+requested_decision: authorize the fixture delivery action for wi-owner-expired
+authorized_action: publish the drafted content to the external system
+mode: one-time
+scope: this single delivery only, not a standing policy
+owner: Fixture Owner
+status: expired
+provenance: owner-confirmed

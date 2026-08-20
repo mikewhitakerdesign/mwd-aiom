@@ -1,0 +1,18 @@
+seed_version: "0.1"
+bundles:
+  - bundle_id: external-action-integration
+    relevant: "true"
+    provenance: owner-confirmed
+  - bundle_id: persistent-operation-monitoring
+    relevant: "true"
+    provenance: owner-confirmed
+capabilities:
+  - capability_id: external-action-execution
+    status: required
+    provenance: owner-confirmed
+    rationale: fixture capability used by authority-boundary transition scenarios
+  - capability_id: persistent-continuation
+    status: required
+    provenance: owner-confirmed
+    rationale: fixture capability used by the runtime-prerequisite scenario
+    runtime_requirement_reference: requires outbound network access to the scheduled monitoring endpoint

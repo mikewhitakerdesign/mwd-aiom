@@ -1,0 +1,13 @@
+id: appr-owner-approved-past-expiration
+seed_version: "0.1"
+related_work_item_id: wi-owner-approved-past-expiration
+target_context: fixture approval demonstrating structured expiration overriding status alone
+requested_decision: authorize the fixture delivery action for wi-owner-approved-past-expiration
+authorized_action: publish the drafted content to the external system
+mode: one-time
+scope: this single delivery only, not a standing policy
+owner: Fixture Owner
+status: approved
+decision_at: "2026-07-01T09:00:00Z"
+expiration: "2026-08-10T00:00:00Z"
+provenance: owner-confirmed

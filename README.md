@@ -43,16 +43,28 @@ At this stage (**AIOM Core Seed Foundation**), this repository contains:
   structural checks, and a small set of mechanically unambiguous
   contradiction checks. It validates project-state directories (fixtures,
   for v0.1), not a live `.aiom/` directory.
+- Transition & Approval Kernel (`src/kernel/transition/`) — a read-only
+  Transition Gate that deterministically evaluates one proposed Work Item
+  transition at a time against a small, bounded, proving-only rule set:
+  whether the transition's structural prerequisites (validation state,
+  blocker state, source stage) hold, whether a referenced Atomic
+  Capability is activated (never conflated with being authorized), and
+  whether required Owner authorization is mechanically provable from an
+  approved, structurally matching Owner Approval Artifact. It never
+  decides whether a transition *should* happen, never grants authority,
+  and never mutates project state — see `src/kernel/transition/gate.ts`.
 
-It does **not** yet contain a Transition Gate or Runtime Probe, and no
-project — including this one — has a live `.aiom/` directory. Capability
-relevance, activation, runtime availability, and authorization remain
-distinct — this repository defines what capabilities are, not which are
-turned on for a given project, and the validator checks that recorded
+It does **not** yet contain a Runtime Probe, and no project — including
+this one — has a live `.aiom/` directory. Capability relevance,
+activation, runtime availability, and authorization remain distinct —
+this repository defines what capabilities are, not which are turned on
+for a given project; the Kernel Validation validator checks that recorded
 decisions reference known IDs coherently, not whether those decisions
-themselves are correct. Nothing here should be read as an implementation
-of relevance, activation, or authorization decision logic until a later
-initiative adds it.
+themselves are correct; and the Transition Gate checks structural
+eligibility and provable authorization, not whether a transition is
+strategically wise. Nothing here should be read as an implementation of
+relevance, activation, runtime-availability, or "should this proceed"
+decision logic until a later initiative adds it.
 
 ## What this is not
 
@@ -79,7 +91,8 @@ AIOM Core
   → Governed Work                (template + schema implemented — see seed/templates/)
   → Owner Approval Artifact      (template + schema implemented — see seed/templates/)
   → Kernel Validation            (deterministic validator implemented — see src/kernel/validation/)
-  → Transition Gate / Runtime Probe  (not yet implemented)
+  → Transition Gate              (implemented — see src/kernel/transition/)
+  → Runtime Probe                (not yet implemented)
   → Project Action / Handoff    (not yet implemented)
 ```
 
@@ -94,9 +107,10 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 5 — Kernel Validation —
-  complete**
-- Next roadmap increment: **Initiative 6 — Transition & Approval Kernel**
+- Current implementation progress: **Initiative 6 — Transition & Approval
+  Kernel — complete**
+- Next roadmap increment: **Initiative 7 — Runtime Probe +
+  Runtime-Neutral Orchestration**
 
 ## Implementation roadmap
 
@@ -108,7 +122,7 @@ implementation evidence warrants):
 3. Capability Architecture — done
 4. Project State Templates & Schemas — done
 5. Kernel Validation — done
-6. Transition & Approval Kernel
+6. Transition & Approval Kernel — done
 7. Runtime Probe + Runtime-Neutral Orchestration
 8. Fixtures, Documentation & End-to-End v0.1 Proof
 

@@ -1,0 +1,11 @@
+id: appr-owner-pending
+seed_version: "0.1"
+related_work_item_id: wi-owner-pending
+target_context: fixture approval for Transition Gate scenario C
+requested_decision: authorize the fixture delivery action for wi-owner-pending
+authorized_action: publish the drafted content to the external system
+mode: one-time
+scope: this single delivery only, not a standing policy
+owner: Fixture Owner
+status: pending
+provenance: owner-confirmed

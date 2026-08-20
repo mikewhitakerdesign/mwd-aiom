@@ -1,0 +1,12 @@
+id: appr-durable-policy
+seed_version: "0.1"
+related_work_item_id: wi-durable-policy
+target_context: fixture durable-policy approval for Transition Gate scenario I
+requested_decision: authorize a bounded, recurring class of fixture delivery actions
+authorized_action: publish the drafted content to the external system
+mode: durable-policy
+scope: this bounded class of publishing actions, not open-ended authorization
+owner: Fixture Owner
+status: approved
+decision_at: "2026-08-05T09:00:00Z"
+provenance: owner-confirmed
