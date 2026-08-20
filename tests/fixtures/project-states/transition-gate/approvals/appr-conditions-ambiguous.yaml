@@ -1,0 +1,15 @@
+id: appr-conditions-ambiguous
+seed_version: "0.1"
+related_work_item_id: wi-conditions-ambiguous
+target_context: fixture recurring-case-by-case approval for Transition Gate scenario J
+requested_decision: authorize this occurrence of the fixture delivery action, subject to conditions
+authorized_action: publish the drafted content to the external system
+mode: recurring-case-by-case
+scope: this occurrence only, subject to the conditions below
+owner: Fixture Owner
+status: approved
+decision_at: "2026-08-10T09:00:00Z"
+conditions:
+  - only during business hours
+  - only if the downstream system health check passes
+provenance: owner-confirmed

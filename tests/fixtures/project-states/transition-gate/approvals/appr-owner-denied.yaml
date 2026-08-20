@@ -1,0 +1,12 @@
+id: appr-owner-denied
+seed_version: "0.1"
+related_work_item_id: wi-owner-denied
+target_context: fixture approval for Transition Gate scenario D (denied)
+requested_decision: authorize the fixture delivery action for wi-owner-denied
+authorized_action: publish the drafted content to the external system
+mode: one-time
+scope: this single delivery only, not a standing policy
+owner: Fixture Owner
+status: denied
+decision_at: "2026-08-10T09:00:00Z"
+provenance: owner-confirmed

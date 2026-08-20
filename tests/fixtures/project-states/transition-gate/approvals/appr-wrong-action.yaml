@@ -1,0 +1,12 @@
+id: appr-wrong-action
+seed_version: "0.1"
+related_work_item_id: wi-wrong-action
+target_context: fixture approval for Transition Gate scenario G
+requested_decision: authorize a different fixture action than the one being proposed
+authorized_action: rotate the credentials on schedule
+mode: one-time
+scope: this single delivery only, not a standing policy
+owner: Fixture Owner
+status: approved
+decision_at: "2026-08-10T09:00:00Z"
+provenance: owner-confirmed

@@ -47,12 +47,33 @@ decide Capability Bundle relevance, Atomic Capability activation, or
 authorization — it only checks that already-recorded decisions reference
 known IDs and don't mechanically contradict each other.
 
+## What currently exists (continued): Transition & Approval Kernel
+
+`src/kernel/transition/` is a read-only Transition Gate over the same
+schema layer and over Kernel Validation's project-state loader: given one
+proposed Work Item transition (an ephemeral, programmatic input, not a
+new durable artifact type), it evaluates the transition against a small,
+bounded, proving-only rule set (`src/kernel/transition/rules.ts`) covering
+source/target stage relevance, validation and blocker prerequisites,
+Atomic Capability activation status, and — where a transition crosses the
+authorization boundary — whether an approved, structurally matching Owner
+Approval Artifact exists (`src/kernel/transition/scope.ts`). Coverage
+matching reads only structured Approval Artifact fields
+(`related_work_item_id`, `status`, `expiration`, `authorized_action` by
+exact string equality); it never interprets `scope` or `target_context`
+prose, and a non-empty `conditions` array yields an explicit
+`indeterminate` outcome rather than a guess. The gate never grants
+authority, never decides whether a transition should occur, and never
+mutates project state — it answers only whether a transition is
+mechanically eligible, mechanically blocked, or indeterminate given
+already-recorded state.
+
 ## What is not implemented yet
 
 This Seed defines Core, safeguards, the Capability Architecture, the
-project-state artifact templates/schemas, and a deterministic validator
-over that schema layer. It does not yet include Project Bootstrap, a
-Transition Gate, a Runtime Probe, runtime adapters, or any
+project-state artifact templates/schemas, a deterministic validator over
+that schema layer, and a read-only Transition Gate. It does not yet
+include Project Bootstrap, a Runtime Probe, runtime adapters, or any
 runtime-specific (e.g. Claude Code) instructions. `.aiom/` is not created
 as live state anywhere in this repository — the templates under
 `templates/` and the fixtures under `tests/fixtures/` are the only

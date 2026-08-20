@@ -1,0 +1,11 @@
+id: appr-owner-superseded
+seed_version: "0.1"
+related_work_item_id: wi-owner-superseded
+target_context: fixture approval for Transition Gate scenario D (superseded)
+requested_decision: authorize the fixture delivery action for wi-owner-superseded
+authorized_action: publish the drafted content to the external system
+mode: one-time
+scope: this single delivery only, not a standing policy
+owner: Fixture Owner
+status: superseded
+provenance: owner-confirmed
