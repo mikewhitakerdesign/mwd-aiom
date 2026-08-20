@@ -64,6 +64,14 @@ export interface GateIssue {
   readonly severity: GateIssueSeverity;
   readonly message: string;
   readonly path?: string;
+  /**
+   * The Runtime Requirement ID this issue concerns, when it is a runtime-
+   * prerequisite issue (Initiative 7). Lets a caller — e.g. the
+   * Orchestrator — identify the specific unmet/unknown runtime capability
+   * structurally, without re-parsing this issue's prose `message` or
+   * re-reading project state the gate already consulted.
+   */
+  readonly requirementId?: string;
 }
 
 export interface TransitionGateResult {
@@ -79,6 +87,13 @@ export function gateIssue(
   severity: GateIssueSeverity,
   message: string,
   path?: string,
+  requirementId?: string,
 ): GateIssue {
-  return path === undefined ? { code, severity, message } : { code, severity, message, path };
+  return {
+    code,
+    severity,
+    message,
+    ...(path !== undefined ? { path } : {}),
+    ...(requirementId !== undefined ? { requirementId } : {}),
+  };
 }

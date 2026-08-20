@@ -53,18 +53,39 @@ At this stage (**AIOM Core Seed Foundation**), this repository contains:
   approved, structurally matching Owner Approval Artifact. It never
   decides whether a transition *should* happen, never grants authority,
   and never mutates project state — see `src/kernel/transition/gate.ts`.
+- Runtime Probe (`src/kernel/runtime/`) — structured, evidence-backed,
+  provider-neutral Runtime Evidence (`available` / `unavailable` /
+  `unknown`) over a small, bounded Runtime Requirement ID vocabulary
+  (`filesystem-read`, `filesystem-write`, `process-execution`,
+  `repository-read`, `repository-write`, `network-access`), produced by a
+  `RuntimeAdapter` behind which any provider-specific inspection mechanism
+  must sit. A bounded, side-effect-safe Claude Code / Node.js adapter
+  (`src/kernel/runtime/adapters/node.ts`) is the first proving adapter;
+  Core/kernel consumers depend only on the `RuntimeAdapter` interface and
+  `RuntimeEvidence`, never on provider identity. Evidence is ephemeral —
+  produced per evaluation, never written into durable project state.
+- Runtime-Neutral Orchestration foundation (`src/kernel/orchestration/`) —
+  a read-only function that composes project validation, the Transition
+  Gate, and, when supplied, Runtime Evidence into one of a small set of
+  governed dispositions (e.g. `awaiting-owner-authorization`,
+  `blocked-by-runtime`, `runtime-unknown`, `requires-qualitative-judgment`,
+  `ready-for-governed-execution`). It reasons about what is known,
+  blocked, or unresolved; it never grants authority, executes work, or
+  duplicates validator/gate logic — see `src/kernel/orchestration/orchestrate.ts`.
 
-It does **not** yet contain a Runtime Probe, and no project — including
-this one — has a live `.aiom/` directory. Capability relevance,
-activation, runtime availability, and authorization remain distinct —
-this repository defines what capabilities are, not which are turned on
-for a given project; the Kernel Validation validator checks that recorded
-decisions reference known IDs coherently, not whether those decisions
-themselves are correct; and the Transition Gate checks structural
-eligibility and provable authorization, not whether a transition is
-strategically wise. Nothing here should be read as an implementation of
-relevance, activation, runtime-availability, or "should this proceed"
-decision logic until a later initiative adds it.
+No project — including this one — has a live `.aiom/` directory.
+Capability relevance, activation, runtime availability, and authorization
+remain distinct — this repository defines what capabilities are, not
+which are turned on for a given project; the Kernel Validation validator
+checks that recorded decisions reference known IDs coherently, not
+whether those decisions themselves are correct; the Transition Gate
+checks structural eligibility and provable authorization, not whether a
+transition is strategically wise; the Runtime Probe reports only
+mechanically discoverable facts about the current runtime, never
+authorization; and the Orchestrator composes those facts into a bounded
+disposition, never an execution decision. Nothing here should be read as
+project Bootstrap, autonomous execution, or state mutation until a later
+initiative adds it.
 
 ## What this is not
 
@@ -92,7 +113,8 @@ AIOM Core
   → Owner Approval Artifact      (template + schema implemented — see seed/templates/)
   → Kernel Validation            (deterministic validator implemented — see src/kernel/validation/)
   → Transition Gate              (implemented — see src/kernel/transition/)
-  → Runtime Probe                (not yet implemented)
+  → Runtime Probe                (implemented — see src/kernel/runtime/)
+  → Runtime-Neutral Orchestration (foundation implemented — see src/kernel/orchestration/)
   → Project Action / Handoff    (not yet implemented)
 ```
 
@@ -107,10 +129,10 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 6 — Transition & Approval
-  Kernel — complete**
-- Next roadmap increment: **Initiative 7 — Runtime Probe +
-  Runtime-Neutral Orchestration**
+- Current implementation progress: **Initiative 7 — Runtime Probe +
+  Runtime-Neutral Orchestration — complete**
+- Next roadmap increment: **Initiative 8 — Fixtures, Documentation &
+  End-to-End v0.1 Proof**
 
 ## Implementation roadmap
 
@@ -123,7 +145,7 @@ implementation evidence warrants):
 4. Project State Templates & Schemas — done
 5. Kernel Validation — done
 6. Transition & Approval Kernel — done
-7. Runtime Probe + Runtime-Neutral Orchestration
+7. Runtime Probe + Runtime-Neutral Orchestration — done
 8. Fixtures, Documentation & End-to-End v0.1 Proof
 
 ## Validation

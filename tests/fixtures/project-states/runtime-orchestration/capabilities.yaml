@@ -1,0 +1,11 @@
+seed_version: "0.1"
+bundles:
+  - bundle_id: external-action-integration
+    relevant: "true"
+    provenance: owner-confirmed
+capabilities:
+  - capability_id: external-action-execution
+    status: required
+    provenance: owner-confirmed
+    rationale: fixture capability with a canonical Runtime Requirement ID, used by the runtime-evidence Orchestrator scenarios
+    runtime_requirement_reference: network-access

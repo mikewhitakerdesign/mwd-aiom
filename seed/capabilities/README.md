@@ -19,7 +19,7 @@ Project Profile                  (template + schema implemented — see seed/tem
   → Capability Bundle relevance  (bundles defined here; relevance decision not yet implemented)
   → Atomic Capability activation (capabilities defined here; activation not yet implemented)
   → Standards / Gates            (referenced here; enforcement not yet implemented)
-  → Adapters / Runtime           (not yet implemented)
+  → Adapters / Runtime           (Runtime Probe implemented — see src/kernel/runtime/; provider-specific adapter binding beyond the first proving adapter not yet implemented)
   → Project Configuration / Governed Work  (template + schema implemented — see seed/templates/)
 ```
 
@@ -87,14 +87,20 @@ enforced — only that Capability definitions may reference them coherently.
 ## What is not implemented yet
 
 Project Profile signal *detection*, Capability relevance/activation
-*decision logic*, Standards/Gates enforcement mechanisms, runtime
-adapters/bindings, and Project Bootstrap all remain future work. (The
-durable *shapes* those decisions get recorded in — Project Profile and
-Capability Activation Record templates/schemas — now exist; see
+*decision logic*, Standards/Gates enforcement mechanisms, and Project
+Bootstrap all remain future work. (The durable *shapes* those decisions
+get recorded in — Project Profile and Capability Activation Record
+templates/schemas — now exist; see
 [`../templates/README.md`](../templates/README.md). A deterministic
 validator that resolves bundle/capability ID references recorded in
 those shapes against the definitions here now also exists — see
 [`../../src/kernel/validation/`](../../src/kernel/validation/) — but it
 checks reference coherence only; it does not decide relevance or
-activation.) See the
+activation. A Runtime Probe and a bounded, provider-neutral
+`RuntimeAdapter` interface also now exist — see
+[`../../src/kernel/runtime/`](../../src/kernel/runtime/) — with one
+proving adapter for Claude Code / Node.js; a second, independently
+implemented runtime adapter remains unexercised, so cross-provider
+portability is architecture-compatible by design but not yet empirically
+proven.) See the
 repository root [`README.md`](../../README.md) for the roadmap.

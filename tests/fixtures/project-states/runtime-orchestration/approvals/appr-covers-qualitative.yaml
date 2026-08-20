@@ -1,0 +1,14 @@
+id: appr-covers-qualitative
+seed_version: "0.1"
+related_work_item_id: wi-qualitative
+target_context: wi-qualitative
+requested_decision: authorize the qualitative-judgment fixture transition
+authorized_action: notify the external monitoring endpoint
+mode: one-time
+scope: covers exactly this Work Item's delivery transition and no other
+owner: fixture-owner
+status: approved
+decision_at: "2026-08-19T00:00:00Z"
+conditions:
+  - only if the monitoring endpoint has not changed ownership since this approval was granted
+provenance: owner-confirmed

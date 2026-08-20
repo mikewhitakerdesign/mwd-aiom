@@ -1,5 +1,6 @@
 import type { CapabilityActivationRecord } from '../schemas/capability-activation.js';
 import type { CapabilityIndex } from '../validation/capability-index.js';
+import { isRuntimeRequirementId, type RuntimeEvidenceMap } from '../runtime/index.js';
 import { gateIssue, type GateIssue } from './types.js';
 
 /**
@@ -19,11 +20,25 @@ import { gateIssue, type GateIssue } from './types.js';
  * - not-applicable   -> invalid for use (blocked).
  * - no recorded entry -> activation status not recorded for this project
  *                        (indeterminate).
+ *
+ * Initiative 7 resolves the previously unconditional
+ * `runtime-prerequisite-unverified` indeterminate for the `required` case:
+ * when `runtimeEvidence` is supplied and the capability's recorded
+ * `runtime_requirement_reference` exactly matches a known Runtime
+ * Requirement ID (see runtime/requirements.ts), the matching evidence
+ * resolves this dimension deterministically — available clears the issue,
+ * unavailable blocks it, and unknown (or a reference that isn't a
+ * recognized ID at all, e.g. still free prose) leaves it indeterminate,
+ * exactly as before Initiative 7. Activation and runtime availability
+ * remain independent checks either way (Falsification Gate B question 7):
+ * this never treats runtime evidence as itself proof of activation, and
+ * never treats activation as itself proof of runtime availability.
  */
 export function evaluateCapabilityRequirement(
   capabilityId: string,
   index: CapabilityIndex,
   capabilityActivation: CapabilityActivationRecord,
+  runtimeEvidence?: RuntimeEvidenceMap,
 ): GateIssue[] {
   if (!index.capabilities.has(capabilityId)) {
     return [
@@ -97,11 +112,10 @@ export function evaluateCapabilityRequirement(
     case 'required':
       if (entry.runtime_requirement_reference) {
         issues.push(
-          gateIssue(
-            'runtime-prerequisite-unverified',
-            'indeterminate',
-            `capability "${capabilityId}" records a runtime requirement ("${entry.runtime_requirement_reference}") but no Runtime Probe evidence exists yet to confirm it is available`,
-            'capabilityId',
+          ...evaluateRuntimePrerequisite(
+            capabilityId,
+            entry.runtime_requirement_reference,
+            runtimeEvidence,
           ),
         );
       }
@@ -109,4 +123,41 @@ export function evaluateCapabilityRequirement(
   }
 
   return issues;
+}
+
+function evaluateRuntimePrerequisite(
+  capabilityId: string,
+  reference: string,
+  runtimeEvidence: RuntimeEvidenceMap | undefined,
+): GateIssue[] {
+  const evidence =
+    runtimeEvidence && isRuntimeRequirementId(reference) ? runtimeEvidence.get(reference) : undefined;
+
+  if (evidence?.availability === 'available') {
+    return [];
+  }
+
+  if (evidence?.availability === 'unavailable') {
+    return [
+      gateIssue(
+        'runtime-requirement-unavailable',
+        'error',
+        `capability "${capabilityId}" requires runtime capability "${reference}", which Runtime Probe evidence reports unavailable (${evidence.reason ?? evidence.mechanism})`,
+        'capabilityId',
+        reference,
+      ),
+    ];
+  }
+
+  return [
+    gateIssue(
+      'runtime-prerequisite-unverified',
+      'indeterminate',
+      evidence
+        ? `capability "${capabilityId}" records a runtime requirement ("${reference}") but Runtime Probe evidence reports it as unknown`
+        : `capability "${capabilityId}" records a runtime requirement ("${reference}") but no Runtime Probe evidence exists yet to confirm it is available`,
+      'capabilityId',
+      isRuntimeRequirementId(reference) ? reference : undefined,
+    ),
+  ];
 }

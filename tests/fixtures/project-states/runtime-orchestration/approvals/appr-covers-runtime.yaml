@@ -1,0 +1,12 @@
+id: appr-covers-runtime
+seed_version: "0.1"
+related_work_item_id: wi-runtime-authorized
+target_context: wi-runtime-authorized
+requested_decision: authorize notifying the external monitoring endpoint
+authorized_action: notify the external monitoring endpoint
+mode: one-time
+scope: covers exactly this Work Item's delivery transition and no other
+owner: fixture-owner
+status: approved
+decision_at: "2026-08-19T00:00:00Z"
+provenance: owner-confirmed
