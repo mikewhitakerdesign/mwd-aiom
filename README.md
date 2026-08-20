@@ -26,11 +26,16 @@ At this stage (**AIOM Core Seed Foundation**), this repository contains:
   reference for AIOM Core's responsibilities, Owner authority, operating
   principles, responsibility boundaries, and a safeguard foundation; see
   `seed/README.md`
+- The Capability Architecture (`seed/capabilities/`) — reusable,
+  provider-neutral Capability Bundle and Atomic Capability definitions;
+  see `seed/capabilities/README.md`
 
-It does **not** yet contain Capability Bundles, Atomic Capabilities,
-`.aiom/` project-state templates, schemas, a validator, or a Runtime
-Probe. Nothing here should be read as an implementation of those until a
-later initiative adds it.
+It does **not** yet contain `.aiom/` project-state templates, schemas, a
+validator, or a Runtime Probe. Capability relevance, activation, runtime
+availability, and authorization remain distinct — this repository defines
+what capabilities are, not which are turned on for a given project.
+Nothing here should be read as an implementation of those until a later
+initiative adds it.
 
 ## What this is not
 
@@ -51,8 +56,8 @@ AIOM Core
   → AIOM Core Seed              (foundation implemented — see seed/)
   → Project Bootstrap           (not yet implemented)
   → Project Profile             (not yet implemented)
-  → Capability Bundles          (not yet implemented)
-  → Atomic Capabilities         (not yet implemented)
+  → Capability Bundles          (definitions implemented — see seed/capabilities/)
+  → Atomic Capabilities         (definitions implemented — see seed/capabilities/)
   → Governed Work                (not yet implemented)
   → Validation / Approval / Runtime  (not yet implemented)
   → Project Action / Handoff    (not yet implemented)
@@ -69,9 +74,10 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 2 — AIOM Core Seed
-  Foundation — complete**
-- Next roadmap increment: **Initiative 3 — Capability Architecture**
+- Current implementation progress: **Initiative 3 — Capability
+  Architecture — complete**
+- Next roadmap increment: **Initiative 4 — Project State Templates &
+  Schemas**
 
 ## Implementation roadmap
 
@@ -80,7 +86,7 @@ implementation evidence warrants):
 
 1. Repository Foundation — done
 2. AIOM Core Seed Foundation — done
-3. Capability Architecture
+3. Capability Architecture — done
 4. Project State Templates & Schemas
 5. Kernel Validation
 6. Transition & Approval Kernel
