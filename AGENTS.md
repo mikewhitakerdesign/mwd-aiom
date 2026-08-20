@@ -9,14 +9,15 @@ and automation work.
 
 This repository builds the experimental **AIOM v0.1** proving
 implementation. Implementation progress is tracked by initiative, not by
-the AIOM version: **Initiative 4 — Project State Templates & Schemas** is
-complete. The AIOM Core Seed exists in foundation form, defines the
-reusable Capability Bundle and Atomic Capability catalog, and now also
-defines the four durable project-state artifact templates and their
-TypeScript/Zod schemas — see `seed/`, `seed/capabilities/`, and
-`seed/templates/`. A validator, Transition Gate, and Runtime Probe do not
-exist yet (Initiative 5 — Kernel Validation is next). See `README.md` for
-the current roadmap.
+the AIOM version: **Initiative 5 — Kernel Validation** is complete. The
+AIOM Core Seed exists in foundation form, defines the reusable Capability
+Bundle and Atomic Capability catalog, defines the four durable
+project-state artifact templates and their TypeScript/Zod schemas, and
+now also has a thin, read-only deterministic validator over that schema
+layer — see `seed/`, `seed/capabilities/`, `seed/templates/`, and
+`src/kernel/validation/`. A Transition Gate and Runtime Probe do not exist
+yet (Initiative 6 — Transition & Approval Kernel is next). See
+`README.md` for the current roadmap.
 
 ## How repository guidance is organized
 

@@ -30,18 +30,33 @@ project can depend on, independent of runtime or provider.
   directory. See [`templates/README.md`](./templates/README.md). The
   schemas and parsing layer live in `src/kernel/` at the repository root,
   not under `seed/`, since they are executable code rather than Seed
-  content a consuming project copies.
+  content a consuming project copies. `src/kernel/validation/` — see
+  below — is executable code in the same sense.
+
+## What currently exists (continued): Kernel Validation
+
+`src/kernel/validation/` is a thin, read-only deterministic validator
+over the schema layer above: it resolves Capability Bundle/Atomic
+Capability ID references (derived from `capabilities/bundles.md` and
+`capabilities/capabilities.md`, not a second registry), checks Work
+Item/Owner Approval Artifact reference coherence, duplicate IDs, and
+Seed-version consistency across a project-state directory, checks
+Bootstrap Ready structural (not substantive) consistency, and flags a
+small set of mechanically unambiguous state contradictions. It does not
+decide Capability Bundle relevance, Atomic Capability activation, or
+authorization — it only checks that already-recorded decisions reference
+known IDs and don't mechanically contradict each other.
 
 ## What is not implemented yet
 
-This Seed defines Core, safeguards, the Capability Architecture, and the
-project-state artifact templates/schemas only. It does not yet include
-Project Bootstrap, Bootstrap Ready validation logic, a full validator,
-Transition Gate, cross-file referential integrity checks, a Runtime
-Probe, runtime adapters, or any runtime-specific (e.g. Claude Code)
-instructions. `.aiom/` is not created as live state anywhere in this
-repository — the templates under `templates/` and the fixtures under
-`tests/fixtures/` are the only instances that exist. See the repository
+This Seed defines Core, safeguards, the Capability Architecture, the
+project-state artifact templates/schemas, and a deterministic validator
+over that schema layer. It does not yet include Project Bootstrap, a
+Transition Gate, a Runtime Probe, runtime adapters, or any
+runtime-specific (e.g. Claude Code) instructions. `.aiom/` is not created
+as live state anywhere in this repository — the templates under
+`templates/` and the fixtures under `tests/fixtures/` are the only
+instances that exist. See the repository
 root [`README.md`](../README.md) for the full implementation roadmap.
 
 ## Relationship to mwd-aiom

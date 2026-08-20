@@ -88,8 +88,13 @@ enforced — only that Capability definitions may reference them coherently.
 
 Project Profile signal *detection*, Capability relevance/activation
 *decision logic*, Standards/Gates enforcement mechanisms, runtime
-adapters/bindings, a full validator, and Project Bootstrap all remain
-future work. (The durable *shapes* those decisions get recorded in —
-Project Profile and Capability Activation Record templates/schemas — now
-exist; see [`../templates/README.md`](../templates/README.md).) See the
+adapters/bindings, and Project Bootstrap all remain future work. (The
+durable *shapes* those decisions get recorded in — Project Profile and
+Capability Activation Record templates/schemas — now exist; see
+[`../templates/README.md`](../templates/README.md). A deterministic
+validator that resolves bundle/capability ID references recorded in
+those shapes against the definitions here now also exists — see
+[`../../src/kernel/validation/`](../../src/kernel/validation/) — but it
+checks reference coherence only; it does not decide relevance or
+activation.) See the
 repository root [`README.md`](../../README.md) for the roadmap.

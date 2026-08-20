@@ -1,0 +1,11 @@
+seed_version: "0.1"
+bundles:
+  - bundle_id: software-engineering
+    relevant: "false"
+    provenance: owner-confirmed
+    rationale: this project does not involve writing or modifying source code
+capabilities:
+  - capability_id: software-implementation
+    status: required
+    provenance: ai-inferred
+    rationale: intentionally contradictory fixture — software-engineering is marked not relevant above
