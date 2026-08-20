@@ -1,0 +1,10 @@
+id: appr-1
+seed_version: "0.1"
+related_work_item_id: wi-other
+target_context: intentionally invalid fixture
+requested_decision: exercise the approval-work-item-mismatch rule
+mode: one-time
+scope: this fixture only
+owner: Test Owner
+status: pending
+provenance: unknown

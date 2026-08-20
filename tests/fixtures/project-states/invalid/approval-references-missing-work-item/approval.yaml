@@ -1,0 +1,10 @@
+id: fixture-approval
+seed_version: "0.1"
+related_work_item_id: nonexistent-work-item
+target_context: intentionally invalid fixture
+requested_decision: exercise the broken-work-item-reference rule
+mode: one-time
+scope: this fixture only
+owner: Test Owner
+status: pending
+provenance: unknown

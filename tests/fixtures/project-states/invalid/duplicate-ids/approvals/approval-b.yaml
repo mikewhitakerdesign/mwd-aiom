@@ -1,0 +1,9 @@
+id: dup-approval
+seed_version: "0.1"
+target_context: intentionally invalid fixture — duplicate approval id
+requested_decision: exercise the duplicate-approval-id rule
+mode: one-time
+scope: this fixture only
+owner: Test Owner
+status: pending
+provenance: unknown

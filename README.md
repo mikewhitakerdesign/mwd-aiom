@@ -35,13 +35,24 @@ At this stage (**AIOM Core Seed Foundation**), this repository contains:
   project-local artifact types: Project Profile, Capability Activation
   Record, Governed Work Item, and Owner Approval Artifact; see
   `seed/templates/README.md`
+- Kernel Validation (`src/kernel/validation/`) — a thin, read-only
+  deterministic validator over that schema layer: cross-document
+  referential integrity (Capability Bundle/Atomic Capability ID
+  resolution, Work Item/Owner Approval Artifact reference coherence,
+  duplicate-ID and Seed-version-consistency checks), Bootstrap Ready
+  structural checks, and a small set of mechanically unambiguous
+  contradiction checks. It validates project-state directories (fixtures,
+  for v0.1), not a live `.aiom/` directory.
 
-It does **not** yet contain a validator, Transition Gate, or Runtime
-Probe, and no project — including this one — has a live `.aiom/`
-directory. Capability relevance, activation, runtime availability, and
-authorization remain distinct — this repository defines what capabilities
-are, not which are turned on for a given project. Nothing here should be
-read as an implementation of those until a later initiative adds it.
+It does **not** yet contain a Transition Gate or Runtime Probe, and no
+project — including this one — has a live `.aiom/` directory. Capability
+relevance, activation, runtime availability, and authorization remain
+distinct — this repository defines what capabilities are, not which are
+turned on for a given project, and the validator checks that recorded
+decisions reference known IDs coherently, not whether those decisions
+themselves are correct. Nothing here should be read as an implementation
+of relevance, activation, or authorization decision logic until a later
+initiative adds it.
 
 ## What this is not
 
@@ -67,7 +78,8 @@ AIOM Core
   → Capability Activation Record (template + schema implemented — see seed/templates/)
   → Governed Work                (template + schema implemented — see seed/templates/)
   → Owner Approval Artifact      (template + schema implemented — see seed/templates/)
-  → Validation / Transition Gate / Runtime Probe  (not yet implemented)
+  → Kernel Validation            (deterministic validator implemented — see src/kernel/validation/)
+  → Transition Gate / Runtime Probe  (not yet implemented)
   → Project Action / Handoff    (not yet implemented)
 ```
 
@@ -82,9 +94,9 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 4 — Project State
-  Templates & Schemas — complete**
-- Next roadmap increment: **Initiative 5 — Kernel Validation**
+- Current implementation progress: **Initiative 5 — Kernel Validation —
+  complete**
+- Next roadmap increment: **Initiative 6 — Transition & Approval Kernel**
 
 ## Implementation roadmap
 
@@ -95,7 +107,7 @@ implementation evidence warrants):
 2. AIOM Core Seed Foundation — done
 3. Capability Architecture — done
 4. Project State Templates & Schemas — done
-5. Kernel Validation
+5. Kernel Validation — done
 6. Transition & Approval Kernel
 7. Runtime Probe + Runtime-Neutral Orchestration
 8. Fixtures, Documentation & End-to-End v0.1 Proof

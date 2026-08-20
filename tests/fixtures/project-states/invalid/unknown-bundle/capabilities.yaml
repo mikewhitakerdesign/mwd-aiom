@@ -1,0 +1,6 @@
+seed_version: "0.1"
+bundles:
+  - bundle_id: not-a-real-bundle
+    relevant: "true"
+    provenance: owner-confirmed
+capabilities: []
