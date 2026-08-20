@@ -13,16 +13,25 @@ project can depend on, independent of runtime or provider.
   boundaries.
 - [`safeguards.md`](./safeguards.md) — the minimum safeguard foundation
   those responsibilities require before later mechanisms implement them.
+- [`capabilities/`](./capabilities/README.md) — the reusable Capability
+  Architecture: Capability Bundle and Atomic Capability definitions a
+  future Project Bootstrap and Orchestrator will use to reason about what
+  a project may need. See
+  [`capabilities/README.md`](./capabilities/README.md) for what relevance
+  means here, how it differs from activation, and where the bundle
+  ([`capabilities/bundles.md`](./capabilities/bundles.md)) and capability
+  ([`capabilities/capabilities.md`](./capabilities/capabilities.md))
+  definitions live.
 
 ## What is not implemented yet
 
-This Seed is foundation only. It does not yet include Project Bootstrap,
-Bootstrap Ready logic, Project Profile, `.aiom/`, Capability Bundle or
-Atomic Capability definitions, capability activation records, Governed
-Work Item templates, Owner Approval Artifact templates, schemas, parser or
-validator logic, transition logic, a Runtime Probe, runtime adapters, or
-any runtime-specific (e.g. Claude Code) instructions. See the repository
-root [`README.md`](../README.md) for the full implementation roadmap.
+This Seed defines Core, safeguards, and the Capability Architecture only.
+It does not yet include Project Bootstrap, Bootstrap Ready logic, Project
+Profile, `.aiom/`, capability activation records, Governed Work Item
+templates, Owner Approval Artifact templates, schemas, parser or validator
+logic, transition logic, a Runtime Probe, runtime adapters, or any
+runtime-specific (e.g. Claude Code) instructions. See the repository root
+[`README.md`](../README.md) for the full implementation roadmap.
 
 ## Relationship to mwd-aiom
 
