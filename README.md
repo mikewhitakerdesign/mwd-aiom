@@ -155,9 +155,12 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 8 — Bootstrap Execution +
-  Synthetic End-to-End Proof — complete**
-- Next roadmap increment: **Initiative 9 — Simple Greenfield Project POC**
+- Current implementation progress: **Initiative 9 — Simple Greenfield
+  Project POC — complete**; see
+  `docs/decisions/observations/2026-08-21-initiative-9-greenfield-poc-closure.md`
+  for the closing evidence and findings.
+- Next roadmap increment: **Initiative 10 — Runtime Invocation Adapter**
+  (not started)
 
 ## Implementation roadmap
 
@@ -172,7 +175,135 @@ implementation evidence warrants):
 6. Transition & Approval Kernel — done
 7. Runtime Probe + Runtime-Neutral Orchestration — done
 8. Bootstrap Execution + Synthetic End-to-End Proof — done
-9. Simple Greenfield Project POC
+9. Simple Greenfield Project POC — done
+10. Runtime Invocation Adapter
+11. Approval Artifact Enforcement Coverage
+12. Work Item Evidence and Completion Integrity
+13. Session-Boundary State Validation
+14. Governance-File Provenance Detection
+15. Delivery Authorization-Chain Gate
+
+Initiatives 10–15 follow directly from Initiative 9's closing evidence
+(`docs/decisions/observations/2026-08-21-initiative-9-greenfield-poc-closure.md`)
+and are not yet designed. Sequencing:
+
+1. **Runtime Invocation Adapter** (10) — first, since 11–15 all assume a
+   supported way to invoke Bootstrap/kernel operations against a real
+   external project exists.
+2. **Approval Artifact Enforcement Coverage** (11) and **Work Item
+   Evidence and Completion Integrity** (12) — next, and may proceed in
+   parallel with each other; both extend existing validation/schema
+   coverage and do not depend on each other.
+3. **Session-Boundary State Validation** (13) — after 10, since it needs
+   a supported invocation path to routinely re-run against live state.
+4. **Governance-File Provenance Detection** (14).
+5. **Delivery Authorization-Chain Gate** (15) — last, since a delivery
+   gate over the authority/evidence chain presumes 11–13 exist to produce
+   a trustworthy chain to check.
+
+### Initiative 10 — Runtime Invocation Adapter
+
+- **Problem:** real sessions and Owners have no supported way to invoke
+  Bootstrap and kernel operations against an external project — Initiative
+  9 used an ad hoc reasoning-to-contract bridge assembled for the
+  experiment, not a repeatable mechanism.
+- **Initiative 9 evidence:** finding 1 (no clean external Bootstrap/runtime
+  invocation path).
+- **Scope boundary:** invocation/packaging only — does not redesign
+  Bootstrap's reasoning contract or kernel logic.
+- **Major dependency:** none outstanding; can start first.
+- **Success condition:** a session or Owner can invoke Bootstrap against a
+  real external project through a supported mechanism, without an
+  ad hoc bridge assembled per project.
+- **ADR likely:** yes — packaging/runtime shape is an architectural
+  decision, to be made when this initiative actually begins, not
+  speculatively now.
+
+### Initiative 11 — Approval Artifact Enforcement Coverage
+
+- **Problem:** general project validation does not ensure that Work Items
+  carrying an Owner-authority requirement have a valid, matching Owner
+  Approval Artifact.
+- **Initiative 9 evidence:** finding 3 (validation does not cover all
+  Owner-authority integrity requirements).
+- **Scope boundary:** extends validation coverage; does not change the
+  Transition Gate's existing, separately-evidenced authority logic (see
+  the closure observation's correction section).
+- **Major dependency:** none blocking; can run in parallel with
+  Initiative 12.
+- **Success condition:** validation flags a Work Item with an
+  authority requirement lacking a valid covering Approval Artifact,
+  without invoking the Transition Gate to do so.
+- **ADR likely:** no, expected to extend existing validation rules rather
+  than make a new architectural decision — to be confirmed when scoped.
+
+### Initiative 12 — Work Item Evidence and Completion Integrity
+
+- **Problem:** completion and evidence claims on a Work Item are too
+  weakly structured to validate reliably; `cmr-site` reached invalid
+  frontmatter state without detection.
+- **Initiative 9 evidence:** finding 4 (schema-invalid Work Item
+  frontmatter went undetected) and finding 5 (evidence/completion
+  integrity is insufficiently structured).
+- **Scope boundary:** Work Item evidence/completion schema and validation
+  only; does not redesign the broader Work Item lifecycle.
+- **Major dependency:** none blocking; can run in parallel with
+  Initiative 11.
+- **Success condition:** a Work Item shaped like `cmr-site`'s
+  `define-cmr-v1-scope.md` fails validation instead of passing silently.
+- **ADR likely:** possibly — evidence-contract changes to a durable
+  artifact schema may warrant one; to be decided when this initiative is
+  actually scoped, not now.
+
+### Initiative 13 — Session-Boundary State Validation
+
+- **Problem:** nothing requires a live session to revalidate durable
+  project state at meaningful boundaries, so a session can operate
+  against `.aiom/` state that has silently drifted invalid.
+- **Initiative 9 evidence:** finding 2 (no routine reconnection to the
+  kernel after Bootstrap) and finding 8 (fresh sessions trust durable
+  state more than they verify it).
+- **Scope boundary:** when/how existing validation is invoked during a
+  session; does not add new validation rules itself (those come from
+  Initiatives 11–12).
+- **Major dependency:** Initiative 10, for a supported invocation path to
+  call.
+- **Success condition:** a session boundary (e.g. session start, before a
+  transition) routinely triggers existing validation against current
+  `.aiom/` state, and surfaces drift rather than silently trusting it.
+- **ADR likely:** no, expected to be an invocation/process change; to be
+  confirmed when scoped.
+
+### Initiative 14 — Governance-File Provenance Detection
+
+- **Problem:** implementation tooling can mutate AIOM/governance-adjacent
+  files without any mechanism detecting or flagging the change.
+- **Initiative 9 evidence:** finding 6 (tooling mutated governance-adjacent
+  files outside AIOM awareness).
+- **Scope boundary:** detection/flagging only; does not itself prevent or
+  roll back such mutations.
+- **Major dependency:** benefits from Initiative 13's session-boundary
+  hook existing, though not strictly blocked by it.
+- **Success condition:** an unexpected change to a governance-adjacent
+  file is surfaced at a session boundary rather than passing unnoticed.
+- **ADR likely:** no, expected to be a detection mechanism; to be
+  confirmed when scoped.
+
+### Initiative 15 — Delivery Authorization-Chain Gate
+
+- **Problem:** no implemented delivery-time mechanism verifies that the
+  authority/evidence chain for the work being delivered is actually valid.
+- **Initiative 9 evidence:** finding 7 (no implemented Git Delivery gate
+  exists; the Initiative 9 readiness audit was manual, not enforced).
+- **Scope boundary:** a delivery-time gate; does not redesign the
+  authority/evidence chain itself (that is Initiatives 11–12's scope).
+- **Major dependency:** Initiatives 11 and 12, so the gate has a
+  trustworthy authority/evidence chain to check.
+- **Success condition:** delivery is mechanically blocked when the
+  authority/evidence chain for the delivered work is invalid or missing,
+  not just withheld by manual audit.
+- **ADR likely:** yes — a delivery-time gate is an architectural decision,
+  to be made when this initiative actually begins.
 
 ## Validation
 
