@@ -25,11 +25,16 @@ governed disposition, and now also a first executable Project Bootstrap
 (deterministic mechanics that validate, assemble, and — in controlled
 synthetic/test destinations only — materialize a candidate Project
 Profile, Capability Activation Record, and first Governed Work Item from
-an external reasoning contract, composing all of the above) — see
-`seed/`, `seed/capabilities/`, `seed/templates/`, `seed/bootstrap.md`,
-`src/kernel/validation/`, `src/kernel/transition/`, `src/kernel/runtime/`,
-`src/kernel/orchestration/`, and `src/kernel/bootstrap/`. See `README.md`
-for the current roadmap.
+an external reasoning contract, composing all of the above), and now also
+a supported Runtime Invocation Layer and `mwd-aiom` CLI (Initiative 10:
+runtime-validated invocation of Bootstrap, Validate, the Transition Gate,
+and the Orchestrator against a real external project, without importing
+this repository's source) — see `seed/`, `seed/capabilities/`,
+`seed/templates/`, `seed/bootstrap.md`, `src/kernel/validation/`,
+`src/kernel/transition/`, `src/kernel/runtime/`,
+`src/kernel/orchestration/`, `src/kernel/bootstrap/`,
+`src/invocation/`, and `src/cli/`. See `README.md` for the current
+roadmap.
 
 ## How repository guidance is organized
 

@@ -13,10 +13,13 @@ import type { OwnerApprovalArtifact } from '../schemas/approval.js';
 import type { ProjectProfile } from '../schemas/project-profile.js';
 
 /**
- * Reads an AIOM project-state directory. For v0.1 this validates fixture
- * directories shaped like a project's future `.aiom/` directory, not a
- * live `.aiom/` directory itself — see AGENTS.md and seed/README.md on
- * why no `.aiom/` state is created by this repository.
+ * Reads an AIOM project-state directory — either a fixture directory
+ * shaped like `.aiom/`, or a real, live `.aiom/` directory materialized
+ * by Bootstrap into an external project and reached through the Runtime
+ * Invocation Layer (src/invocation/, Initiative 10). This repository
+ * itself never gains its own live `.aiom/` state — see AGENTS.md and
+ * seed/README.md — but that is a statement about this repository, not a
+ * limitation of this function.
  *
  * Layout accepted, matching seed/templates/README.md's target paths:
  * - `profile.md`                      → Project Profile (at most one)
