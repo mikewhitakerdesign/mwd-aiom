@@ -155,14 +155,12 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 10 — Runtime Invocation
-  Adapter — complete**; see
-  `docs/decisions/adr/0001-runtime-invocation-and-distribution-boundary.md`
-  for the accepted decision and
-  `docs/decisions/observations/2026-08-21-initiative-9-greenfield-poc-closure.md`
-  for the Initiative 9 evidence it responds to.
-- Next roadmap increment: **Initiative 11 — Approval Artifact Enforcement
-  Coverage** (not started)
+- Current implementation progress: **Initiative 11 — Approval Artifact
+  Enforcement Coverage — complete**; see
+  `docs/decisions/observations/2026-08-21-authority-evidence-warning-mirrors-approval-scope-structural-boundary.md`
+  for the recorded evidence.
+- Next roadmap increment: **Initiative 12 — Work Item Evidence and
+  Completion Integrity** (not started)
 
 ## Implementation roadmap
 
@@ -179,7 +177,7 @@ implementation evidence warrants):
 8. Bootstrap Execution + Synthetic End-to-End Proof — done
 9. Simple Greenfield Project POC — done
 10. Runtime Invocation Adapter — done
-11. Approval Artifact Enforcement Coverage
+11. Approval Artifact Enforcement Coverage — done
 12. Work Item Evidence and Completion Integrity
 13. Session-Boundary State Validation
 14. Governance-File Provenance Detection
@@ -224,7 +222,7 @@ and are not yet designed. Sequencing:
 - **ADR:** yes —
   `docs/decisions/adr/0001-runtime-invocation-and-distribution-boundary.md`.
 
-### Initiative 11 — Approval Artifact Enforcement Coverage
+### Initiative 11 — Approval Artifact Enforcement Coverage — done
 
 - **Problem:** general project validation does not ensure that Work Items
   carrying an Owner-authority requirement have a valid, matching Owner
@@ -234,13 +232,21 @@ and are not yet designed. Sequencing:
 - **Scope boundary:** extends validation coverage; does not change the
   Transition Gate's existing, separately-evidenced authority logic (see
   the closure observation's correction section).
-- **Major dependency:** none blocking; can run in parallel with
-  Initiative 12.
+- **Major dependency:** none blocking; ran independently of Initiative 12.
 - **Success condition:** validation flags a Work Item with an
   authority requirement lacking a valid covering Approval Artifact,
-  without invoking the Transition Gate to do so.
-- **ADR likely:** no, expected to extend existing validation rules rather
-  than make a new architectural decision — to be confirmed when scoped.
+  without invoking the Transition Gate to do so. Met — a new
+  `src/kernel/validation/authority.ts` module, composed into
+  `validateProjectState`, emits a warning-severity
+  `owner-authorization-unproven` issue whenever a Work Item declares
+  `authority_requirement: owner-authorization-required` and no
+  successfully parsed, `approved`, unexpired Owner Approval Artifact is
+  bound to it via `related_work_item_id`; `ValidationResult.valid`
+  remains `true` on the warning alone, and Transition Gate/Orchestrator
+  behavior is unchanged (see
+  `docs/decisions/observations/2026-08-21-authority-evidence-warning-mirrors-approval-scope-structural-boundary.md`).
+- **ADR:** no — extended an existing validation rule; no new
+  architectural decision was required.
 
 ### Initiative 12 — Work Item Evidence and Completion Integrity
 

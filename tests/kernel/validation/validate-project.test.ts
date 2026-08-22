@@ -23,6 +23,17 @@ describe('validateProjectState — valid scenario families', () => {
   });
 });
 
+describe('validateProjectState — Initiative 11 authority-evidence warning', () => {
+  it('exposes owner-authorization-unproven for scenario-c-external-action while remaining valid', () => {
+    const result = validateProjectState(fixtureDir('scenario-c-external-action'), index);
+    expect(result.errors).toEqual([]);
+    expect(result.valid).toBe(true);
+    expect(result.warnings).toContainEqual(
+      expect.objectContaining({ code: 'owner-authorization-unproven', severity: 'warning' }),
+    );
+  });
+});
+
 describe('validateProjectState — referential integrity failures', () => {
   it('flags an unknown Capability Bundle ID', () => {
     const result = validateProjectState(

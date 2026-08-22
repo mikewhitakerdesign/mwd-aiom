@@ -12,6 +12,7 @@ export {
 } from './project-state.js';
 export { validateBootstrapReadiness } from './bootstrap.js';
 export { validateReferences } from './references.js';
+export { validateAuthorityEvidence } from './authority.js';
 export { validateProjectState } from './validate-project.js';
 export {
   buildResult,
