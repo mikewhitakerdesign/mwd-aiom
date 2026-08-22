@@ -103,6 +103,24 @@ describe.runIf(cliBuilt)('mwd-aiom CLI (built artifact)', () => {
     expect(stdout.operation).toBe('bootstrap');
   });
 
+  it('bootstrap --project <nonexistent path> creates the project root end to end via the built binary', () => {
+    const parent = tempDir();
+    const projectRoot = path.join(parent, 'brand-new-project-root');
+    expect(existsSync(projectRoot)).toBe(false);
+
+    const inputFile = path.join(parent, 'request.json');
+    writeFileSync(inputFile, JSON.stringify(minimalBootstrapPayload()), 'utf8');
+
+    const result = runCli(['bootstrap', '--project', projectRoot, '--input', inputFile]);
+    expect(result.status).toBe(0);
+    expect(existsSync(projectRoot)).toBe(true);
+    expect(existsSync(path.join(projectRoot, '.aiom', 'profile.md'))).toBe(true);
+    expect(existsSync(path.join(projectRoot, '.aiom', 'seed', 'core.md'))).toBe(true);
+
+    const validateResult = runCli(['validate', '--project', projectRoot]);
+    expect(validateResult.status).toBe(0);
+  });
+
   it('bootstrap reads structured JSON from stdin when --input is omitted', () => {
     const projectRoot = tempDir();
     const result = runCli(['bootstrap', '--project', projectRoot], {

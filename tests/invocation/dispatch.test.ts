@@ -98,6 +98,34 @@ describe('invoke() — the Runtime Invocation Layer', () => {
       }
       expect(existsSync(path.join(projectRoot, '.aiom'))).toBe(false);
     });
+
+    it('creates a project root that does not yet exist when materializing (verified end to end, not just at resolveProjectContext)', () => {
+      // Deliberately a path under a real temp dir, but the leaf itself must
+      // not exist yet — proves runBootstrap's own mkdirSync(stateDir,
+      // { recursive: true }) (src/kernel/bootstrap/materialize.ts) creates
+      // the project root as a side effect, unchanged by this initiative.
+      const projectRoot = path.join(tempDir(), 'brand-new-project-root');
+      expect(existsSync(projectRoot)).toBe(false);
+
+      const response = invoke({
+        operation: 'bootstrap',
+        projectRoot,
+        ownerContext: 'x',
+        materialize: true,
+        decisions: minimalBootstrapDecisions(),
+      });
+
+      expect(response.status).toBe('ok');
+      expect(existsSync(projectRoot)).toBe(true);
+      expect(existsSync(path.join(projectRoot, '.aiom', 'profile.md'))).toBe(true);
+      expect(existsSync(path.join(projectRoot, '.aiom', 'seed', 'core.md'))).toBe(true);
+      expect(existsSync(path.join(projectRoot, 'AGENTS.md'))).toBe(true);
+
+      // The newly-created project is then readable through validate, the
+      // same way any other external caller would confirm it landed correctly.
+      const validateResponse = invoke({ operation: 'validate', projectRoot });
+      expect(validateResponse.status).toBe('ok');
+    });
   });
 
   describe('validate', () => {

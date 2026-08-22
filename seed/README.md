@@ -170,11 +170,15 @@ supported Runtime Invocation Layer + `mwd-aiom` CLI (Initiative 10).
 Bootstrap materializes it only into a caller-supplied, controlled
 synthetic/test destination; the templates under `templates/` and the
 fixtures under `tests/fixtures/` remain the only in-repository instances.
-Bootstrap's reasoning contract has been exercised only with
-fixture-supplied decisions standing in for a reasoning runtime, not yet
-against a real project or a genuinely separate live session driving
-Bootstrap end-to-end. See the repository root
-[`README.md`](../README.md) for the full implementation roadmap.
+Bootstrap's reasoning contract has been exercised in this repository's
+own test suite only with fixture-supplied decisions standing in for a
+reasoning runtime. It has separately been exercised against a real
+external project by a genuinely separate live session — Initiative 9's
+`cmr-site` proof — through a temporary invocation bridge that Initiative
+10 has since replaced with the supported `mwd-aiom` CLI (see
+[`docs/decisions/observations/2026-08-21-initiative-9-greenfield-poc-closure.md`](../docs/decisions/observations/2026-08-21-initiative-9-greenfield-poc-closure.md)).
+See the repository root [`README.md`](../README.md) for the full
+implementation roadmap.
 
 ## Relationship to mwd-aiom
 
