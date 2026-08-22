@@ -8,11 +8,26 @@
     "node": ">=22.0.0"
   },
   "packageManager": "pnpm@11.17.0",
+  "exports": {
+    ".": {
+      "types": "./dist/invocation/index.d.ts",
+      "default": "./dist/invocation/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "mwd-aiom": "./dist/cli/main.js"
+  },
+  "files": [
+    "dist",
+    "seed"
+  ],
   "scripts": {
     "lint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json && chmod +x dist/cli/main.js",
     "test": "vitest run",
-    "validate": "pnpm lint && pnpm typecheck && pnpm test"
+    "validate": "pnpm lint && pnpm typecheck && pnpm build && pnpm test"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

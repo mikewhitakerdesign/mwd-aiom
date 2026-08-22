@@ -16,6 +16,17 @@ Owner/project context into enough trustworthy AIOM state to identify the
 Next Governed Action. It is not a generator, not a fixed questionnaire, and
 does not assume implementation is the next step.
 
+## How the reasoning below reaches the deterministic mechanics
+
+This file guides the reasoning that produces a completed
+`BootstrapReasoningDecisions` value. Once that reasoning is done, it
+crosses to the deterministic mechanics through the `mwd-aiom` command's
+`bootstrap` operation (see this project's own `AGENTS.md` if one has
+already been materialized, or the `mwd-aiom` runtime package's own
+documentation otherwise) — not by importing or opening the `mwd-aiom`
+source repository. This file does not cover that invocation mechanism in
+detail; it covers only the reasoning that must happen before it.
+
 ## Process
 
 1. **Inspect first.** If a project path exists, read what is mechanically

@@ -139,21 +139,46 @@ Bootstrap determines governed project configuration, not the product
 itself: it does not generate application source code, and it does not
 select a framework or stack.
 
+## What currently exists (continued): Runtime Invocation Layer and CLI
+
+`src/invocation/` (Initiative 10) is the supported external boundary in
+front of the deterministic kernel: it runtime-validates an invocation
+request (Zod schemas mirroring, not redesigning, the kernel's own
+`BootstrapReasoningDecisions`/`ProposedTransition` TypeScript contracts),
+resolves a caller-supplied project root to its `.aiom/` state directory,
+composes Runtime Evidence from plain requirement-ID strings (never a
+function-bearing adapter) for `transition`/`orchestrate`, dispatches to
+exactly one of `runBootstrap()`, `validateProjectState()`,
+`evaluateTransition()`, or `orchestrate()`, and normalizes every failure
+into one structured response shape — no raw exception is ever the public
+interface. `src/cli/` is the first transport over it: the `mwd-aiom`
+command, a thin JSON-in/JSON-out wrapper that performs no interpretation
+of Owner intent or Bootstrap reasoning itself. A blocked, invalid, or
+indeterminate kernel result is still a successful invocation
+(`"status": "ok"`) — it is the kernel's authoritative answer, not a
+failure to produce one. See
+[`docs/decisions/adr/0001-runtime-invocation-and-distribution-boundary.md`](../docs/decisions/adr/0001-runtime-invocation-and-distribution-boundary.md).
+
 ## What is not implemented yet
 
 This Seed defines Core, safeguards, the Capability Architecture, the
 project-state artifact templates/schemas, a deterministic validator over
 that schema layer, a read-only Transition Gate, a Runtime Probe, a
-Runtime-Neutral Orchestration foundation, and Project Bootstrap v0.1.
+Runtime-Neutral Orchestration foundation, Project Bootstrap v0.1, and a
+supported Runtime Invocation Layer + `mwd-aiom` CLI (Initiative 10).
 `.aiom/` is not created as live state anywhere in `mwd-aiom` itself —
 Bootstrap materializes it only into a caller-supplied, controlled
 synthetic/test destination; the templates under `templates/` and the
 fixtures under `tests/fixtures/` remain the only in-repository instances.
-Bootstrap's reasoning contract has been exercised only with
-fixture-supplied decisions standing in for a reasoning runtime, not yet
-against a real project or a genuinely separate live session driving
-Bootstrap end-to-end. See the repository root
-[`README.md`](../README.md) for the full implementation roadmap.
+Bootstrap's reasoning contract has been exercised in this repository's
+own test suite only with fixture-supplied decisions standing in for a
+reasoning runtime. It has separately been exercised against a real
+external project by a genuinely separate live session — Initiative 9's
+`cmr-site` proof — through a temporary invocation bridge that Initiative
+10 has since replaced with the supported `mwd-aiom` CLI (see
+[`docs/decisions/observations/2026-08-21-initiative-9-greenfield-poc-closure.md`](../docs/decisions/observations/2026-08-21-initiative-9-greenfield-poc-closure.md)).
+See the repository root [`README.md`](../README.md) for the full
+implementation roadmap.
 
 ## Relationship to mwd-aiom
 
@@ -172,8 +197,12 @@ instructions from `templates/project-agents.md` and
 `templates/project-claude.md` — thin, generated pointers to that
 project's own `.aiom/` state and `.aiom/seed/` guidance, not a copy of
 this repository's root `AGENTS.md` / `CLAUDE.md`, which govern work on
-`mwd-aiom` itself, not on a project built with AIOM. `mwd-aiom` is not yet
-published as an installable package (Initiative 8 does not change that):
-those generated files say so honestly, so a runtime working on a
-Bootstrap-managed project without access to `mwd-aiom` knows to reason
-from `.aiom/` state directly rather than assume automated validation ran.
+`mwd-aiom` itself, not on a project built with AIOM. As of Initiative 10
+(Runtime Invocation Adapter), `mwd-aiom` has a supported, installable
+runtime — see `src/invocation/` and the `mwd-aiom` CLI it exposes
+(`src/cli/`) — distributed as a packed artifact for v0.1, not yet
+published to a public registry. Those generated files name the
+`mwd-aiom` command's four operations directly; a runtime working on a
+Bootstrap-managed project without it installed still falls back to
+reasoning from `.aiom/` state directly, exactly as before, rather than
+assuming automated validation ran.

@@ -47,15 +47,38 @@ standing authority beyond what a specific session is actually granted.
 
 This project's durable state is designed to be validated and evaluated by
 the deterministic AIOM kernel (Kernel Validation, the Transition &
-Approval Gate, the Runtime Probe, and the Orchestrator) implemented in the
-`mwd-aiom` source repository. As of this project's Bootstrap (AIOM v0.1),
-that kernel is not yet published as an installable package — a runtime
-working on this project without access to `mwd-aiom` should read
+Approval Gate, the Runtime Probe, and the Orchestrator). As of AIOM v0.1
+(Initiative 10), that kernel has a supported invocation path: the
+`mwd-aiom` command, installed from the `mwd-aiom` runtime package,
+exposes four operations —
+
+- `mwd-aiom bootstrap --project <path> --input <request.json>`
+- `mwd-aiom validate --project <path>`
+- `mwd-aiom transition --project <path> --input <request.json>`
+- `mwd-aiom orchestrate --project <path> --input <request.json>`
+
+— each returning one structured JSON document (`{"aiom", "operation",
+"status", "result"}` on success; `{"aiom", "operation", "status",
+"error"}` otherwise) suitable for a reasoning runtime to parse directly,
+without opening or importing the `mwd-aiom` source repository. `--project`
+always takes this project's root, not a raw `.aiom/` path — the command
+resolves the state directory itself. A blocked, invalid, or indeterminate
+result is still a normal, successful invocation (`"status": "ok"`); it is
+the kernel's authoritative answer, not a failure to produce one.
+
+Constructing the structured input `bootstrap`/`transition`/`orchestrate`
+expect (in particular, the reasoning decisions Bootstrap needs) remains
+this session's own responsibility — the command validates and executes
+that input, it does not interpret Owner intent or perform Bootstrap
+reasoning itself.
+
+This file does not prescribe when the command must be invoked during a
+session — that is not yet a standing requirement of this project's
+governance. Where `mwd-aiom` is not installed, a session should read
 `.aiom/profile.md`, `.aiom/capabilities.yaml`, `.aiom/work/`, and
 `.aiom/approvals/` directly and apply the same reasoning `.aiom/seed/`
-describes, rather than assuming automated validation ran. Where `mwd-aiom`
-is available, its `validateProjectState()` and `orchestrate()` functions
-can evaluate this project's `.aiom/` directory directly.
+describes, exactly as before, rather than assuming automated validation
+ran.
 
 ## Current governed disposition
 

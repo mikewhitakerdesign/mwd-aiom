@@ -155,12 +155,14 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 9 — Simple Greenfield
-  Project POC — complete**; see
+- Current implementation progress: **Initiative 10 — Runtime Invocation
+  Adapter — complete**; see
+  `docs/decisions/adr/0001-runtime-invocation-and-distribution-boundary.md`
+  for the accepted decision and
   `docs/decisions/observations/2026-08-21-initiative-9-greenfield-poc-closure.md`
-  for the closing evidence and findings.
-- Next roadmap increment: **Initiative 10 — Runtime Invocation Adapter**
-  (not started)
+  for the Initiative 9 evidence it responds to.
+- Next roadmap increment: **Initiative 11 — Approval Artifact Enforcement
+  Coverage** (not started)
 
 ## Implementation roadmap
 
@@ -176,7 +178,7 @@ implementation evidence warrants):
 7. Runtime Probe + Runtime-Neutral Orchestration — done
 8. Bootstrap Execution + Synthetic End-to-End Proof — done
 9. Simple Greenfield Project POC — done
-10. Runtime Invocation Adapter
+10. Runtime Invocation Adapter — done
 11. Approval Artifact Enforcement Coverage
 12. Work Item Evidence and Completion Integrity
 13. Session-Boundary State Validation
@@ -201,7 +203,7 @@ and are not yet designed. Sequencing:
    gate over the authority/evidence chain presumes 11–13 exist to produce
    a trustworthy chain to check.
 
-### Initiative 10 — Runtime Invocation Adapter
+### Initiative 10 — Runtime Invocation Adapter — done
 
 - **Problem:** real sessions and Owners have no supported way to invoke
   Bootstrap and kernel operations against an external project — Initiative
@@ -214,10 +216,13 @@ and are not yet designed. Sequencing:
 - **Major dependency:** none outstanding; can start first.
 - **Success condition:** a session or Owner can invoke Bootstrap against a
   real external project through a supported mechanism, without an
-  ad hoc bridge assembled per project.
-- **ADR likely:** yes — packaging/runtime shape is an architectural
-  decision, to be made when this initiative actually begins, not
-  speculatively now.
+  ad hoc bridge assembled per project. Met — see
+  `docs/decisions/adr/0001-runtime-invocation-and-distribution-boundary.md`;
+  falsified against a `pnpm pack`-installed artifact in a genuinely
+  separate scratch project (`tests/packaging/pack.test.ts` and a manual
+  external-repository POC covering all four operations).
+- **ADR:** yes —
+  `docs/decisions/adr/0001-runtime-invocation-and-distribution-boundary.md`.
 
 ### Initiative 11 — Approval Artifact Enforcement Coverage
 
