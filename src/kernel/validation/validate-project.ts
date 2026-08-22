@@ -2,6 +2,7 @@ import { loadCapabilityIndex, type CapabilityIndex } from './capability-index.js
 import { loadProjectState, type LoadedProjectState } from './project-state.js';
 import { validateBootstrapReadiness } from './bootstrap.js';
 import { validateReferences } from './references.js';
+import { validateAuthorityEvidence } from './authority.js';
 import { buildResult, issue, type ValidationIssue, type ValidationResult } from './result.js';
 
 /**
@@ -11,18 +12,26 @@ import { buildResult, issue, type ValidationIssue, type ValidationResult } from 
  * activation, or authorization decision is made; see the Initiative 5
  * completion report's Falsification Gate B / Architecture Separation
  * Test for what this function does and does not decide.
+ *
+ * `now` defaults to the current clock and is used only by the Initiative
+ * 11 authority-evidence check (Owner Approval Artifact expiration); it is
+ * not part of the public I10 `validate` invocation request contract —
+ * production/runtime validation uses the current clock, and kernel tests
+ * inject a fixed one directly.
  */
 export function validateProjectState(
   dir: string,
   index: CapabilityIndex = loadCapabilityIndex(),
+  now: Date = new Date(),
 ): ValidationResult {
   const state = loadProjectState(dir);
-  return buildResult(collectProjectStateIssues(state, index));
+  return buildResult(collectProjectStateIssues(state, index, now));
 }
 
 function collectProjectStateIssues(
   state: LoadedProjectState,
   index: CapabilityIndex,
+  now: Date,
 ): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
 
@@ -71,6 +80,7 @@ function collectProjectStateIssues(
   }
 
   issues.push(...validateReferences(state, index));
+  issues.push(...validateAuthorityEvidence(state, now));
 
   return issues;
 }
