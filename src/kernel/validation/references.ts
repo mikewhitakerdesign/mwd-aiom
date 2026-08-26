@@ -220,6 +220,17 @@ function validateWorkItems(
       );
     }
 
+    if (fm.status === 'complete' && fm.validation_state !== 'passed') {
+      issues.push(
+        issue(
+          'complete-item-validation-not-passed',
+          'error',
+          `status is "complete" but validation_state is "${fm.validation_state}", not "passed"`,
+          { artifact: path, path: 'status' },
+        ),
+      );
+    }
+
     if (fm.pending_approval_reference) {
       const target = approvals.find(
         (approval) => approval.data.id === fm.pending_approval_reference,
