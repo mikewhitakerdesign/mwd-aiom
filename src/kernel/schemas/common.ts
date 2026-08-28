@@ -11,6 +11,17 @@ export const seedVersionSchema = z
   .regex(/^\d+\.\d+$/, 'seed_version must look like "0.1"');
 
 /**
+ * The Seed version Bootstrap-produced artifacts target, and the version
+ * Seed Snapshot Integrity (src/kernel/validation/seed-snapshot-integrity.ts)
+ * compares a project's recorded seed_version against. Lives here, not in
+ * src/kernel/bootstrap/, so that both bootstrap/ and validation/ can depend
+ * on it without validation/ importing from bootstrap/ (which already
+ * imports from validation/ — see validate-project.ts's use from
+ * bootstrap.ts). bootstrap/types.ts re-exports this unchanged.
+ */
+export const SEED_VERSION = '0.1';
+
+/**
  * A stable, reference-safe identifier for a bundle, capability, work item,
  * or approval — lowercase kebab-case, matching the identifiers already used
  * in seed/capabilities/.

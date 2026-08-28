@@ -81,7 +81,12 @@ governed work — it must invoke `mwd-aiom validate --project <path>` and
 confirm the result before continuing. Any reported error blocks governed
 continuation until the underlying state is corrected and validation is
 re-run successfully; a result carrying only warnings (for example
-`owner-authorization-unproven`) does not block continuing.
+`owner-authorization-unproven`, or `seed-snapshot-mismatch` if a
+materialized `.aiom/seed/*` file no longer matches the canonical Seed
+asset it was materialized from) does not block continuing. A `validate`
+call is currently the only way this warning is surfaced — `transition` and
+`orchestrate` evaluate the same underlying validation internally but do
+not include its warnings in their own results.
 
 This governs re-entry into existing state; it does not require re-running
 `validate` immediately before `transition` or `orchestrate`, since both

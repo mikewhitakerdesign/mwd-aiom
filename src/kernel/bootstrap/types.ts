@@ -20,9 +20,11 @@ import type { OwnerApprovalArtifact } from '../schemas/approval.js';
 /**
  * The Seed version Bootstrap-produced artifacts target. See
  * seed/templates/README.md — not a manually maintained per-artifact
- * revision.
+ * revision. Re-exported unchanged from schemas/common.ts, where it lives
+ * so that src/kernel/validation/ (which bootstrap/ already depends on) can
+ * also depend on it without a bootstrap -> validation -> bootstrap cycle.
  */
-export const SEED_VERSION = '0.1';
+export { SEED_VERSION } from '../schemas/common.js';
 
 /**
  * Bootstrap's input model (Section 4): the smallest set of things Bootstrap

@@ -3,6 +3,7 @@ import { loadProjectState, type LoadedProjectState } from './project-state.js';
 import { validateBootstrapReadiness } from './bootstrap.js';
 import { validateReferences } from './references.js';
 import { validateAuthorityEvidence } from './authority.js';
+import { validateSeedSnapshotIntegrity } from './seed-snapshot-integrity.js';
 import { buildResult, issue, type ValidationIssue, type ValidationResult } from './result.js';
 
 /**
@@ -25,10 +26,11 @@ export function validateProjectState(
   now: Date = new Date(),
 ): ValidationResult {
   const state = loadProjectState(dir);
-  return buildResult(collectProjectStateIssues(state, index, now));
+  return buildResult(collectProjectStateIssues(dir, state, index, now));
 }
 
 function collectProjectStateIssues(
+  dir: string,
   state: LoadedProjectState,
   index: CapabilityIndex,
   now: Date,
@@ -79,8 +81,18 @@ function collectProjectStateIssues(
     }
   }
 
-  issues.push(...validateReferences(state, index));
+  const referenceIssues = validateReferences(state, index);
+  issues.push(...referenceIssues);
   issues.push(...validateAuthorityEvidence(state, now));
+
+  const seedVersionInternallyConsistent = !referenceIssues.some(
+    (referenceIssue) => referenceIssue.code === 'seed-version-mismatch',
+  );
+  if (state.profile?.result.ok && seedVersionInternallyConsistent) {
+    issues.push(
+      ...validateSeedSnapshotIntegrity(dir, state.profile.result.data.frontmatter.seed_version),
+    );
+  }
 
   return issues;
 }

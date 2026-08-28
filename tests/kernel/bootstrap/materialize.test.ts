@@ -86,6 +86,9 @@ describe('materializeProjectState', () => {
 
     const validation = validateProjectState(result.stateDir);
     expect(validation.valid).toBe(true);
+    expect(validation.warnings).not.toContainEqual(
+      expect.objectContaining({ code: 'seed-snapshot-mismatch' }),
+    );
   });
 
   it('never overwrites an existing brownfield AGENTS.md/CLAUDE.md', () => {
