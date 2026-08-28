@@ -72,13 +72,36 @@ this session's own responsibility — the command validates and executes
 that input, it does not interpret Owner intent or perform Bootstrap
 reasoning itself.
 
-This file does not prescribe when the command must be invoked during a
-session — that is not yet a standing requirement of this project's
-governance. Where `mwd-aiom` is not installed, a session should read
-`.aiom/profile.md`, `.aiom/capabilities.yaml`, `.aiom/work/`, and
-`.aiom/approvals/` directly and apply the same reasoning `.aiom/seed/`
-describes, exactly as before, rather than assuming automated validation
-ran.
+## State re-entry: validate before trusting persisted state
+
+Before a fresh or resumed reasoning episode treats this project's existing
+`.aiom/` state as trustworthy input — to understand project status, select
+or continue a Work Item, make a governance decision, or proceed with
+governed work — it must invoke `mwd-aiom validate --project <path>` and
+confirm the result before continuing. Any reported error blocks governed
+continuation until the underlying state is corrected and validation is
+re-run successfully; a result carrying only warnings (for example
+`owner-authorization-unproven`) does not block continuing.
+
+This governs re-entry into existing state; it does not require re-running
+`validate` immediately before `transition` or `orchestrate`, since both
+already perform deterministic project-state validation internally as part
+of evaluating any proposed transition. A `bootstrap` invocation's own
+returned `validation` result must be honored the same way — unresolved
+errors there must be resolved before treating the newly materialized state
+as governed-ready.
+
+Where `mwd-aiom` is not installed or otherwise cannot be invoked, a session
+may still read `.aiom/profile.md`, `.aiom/capabilities.yaml`,
+`.aiom/work/`, and `.aiom/approvals/` directly and apply the same
+reasoning `.aiom/seed/` describes — but that reading is inspection, not
+validation, and must not be treated as if deterministic validation had run
+or passed. Successful reasoning-based reconstruction of project
+understanding is not evidence that the underlying state is actually
+valid. In this case the session must explicitly treat `.aiom/` state as
+unverified, escalate the inability to perform deterministic validation to
+the Owner rather than silently proceeding, and must not treat governed
+work as ready to continue on the strength of that reasoning alone.
 
 ## Current governed disposition
 
