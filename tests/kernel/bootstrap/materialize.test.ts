@@ -80,6 +80,9 @@ describe('materializeProjectState', () => {
     expect(existsSync(path.join(projectDir, '.aiom', 'seed', 'capabilities', 'bundles.md'))).toBe(true);
     expect(existsSync(path.join(projectDir, 'AGENTS.md'))).toBe(true);
     expect(existsSync(path.join(projectDir, 'CLAUDE.md'))).toBe(true);
+    expect(readFileSync(path.join(projectDir, 'AGENTS.md'), 'utf8')).toContain(
+      'must invoke `mwd-aiom validate --project <path>`',
+    );
 
     const validation = validateProjectState(result.stateDir);
     expect(validation.valid).toBe(true);

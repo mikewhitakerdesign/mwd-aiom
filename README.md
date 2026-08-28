@@ -155,11 +155,11 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 12 — Work Item Evidence and
-  Completion Integrity — complete** (Work Item completion-state integrity
-  only; see the Initiative 12 roadmap entry below for exact scope).
-- Next roadmap increment: **Initiative 13 — Session-Boundary State
-  Validation** (not started)
+- Current implementation progress: **Initiative 13 — Session-Boundary State
+  Validation — complete** (state re-entry validation-invocation cadence
+  only; see the Initiative 13 roadmap entry below for exact scope).
+- Next roadmap increment: **Initiative 14 — Governance-File Provenance
+  Detection** (not started)
 
 ## Implementation roadmap
 
@@ -178,7 +178,7 @@ implementation evidence warrants):
 10. Runtime Invocation Adapter — done
 11. Approval Artifact Enforcement Coverage — done
 12. Work Item Evidence and Completion Integrity — done
-13. Session-Boundary State Validation
+13. Session-Boundary State Validation — done
 14. Governance-File Provenance Detection
 15. Delivery Authorization-Chain Gate
 
@@ -281,24 +281,48 @@ and are not yet designed. Sequencing:
   as `complete-item-still-blocked`; no new architectural decision was
   required.
 
-### Initiative 13 — Session-Boundary State Validation
+### Initiative 13 — Session-Boundary State Validation — done
 
-- **Problem:** nothing requires a live session to revalidate durable
-  project state at meaningful boundaries, so a session can operate
-  against `.aiom/` state that has silently drifted invalid.
+- **Problem:** nothing required a reasoning episode to revalidate durable
+  project state before treating it as trustworthy at a meaningful
+  re-entry point, so a session could operate against `.aiom/` state that
+  had silently drifted invalid. Not a literal runtime/chat session
+  concept — no deterministic session abstraction exists or was created;
+  the actual boundary is persisted-state re-entry, and the existing
+  `Validate` operation is reused as-is.
 - **Initiative 9 evidence:** finding 2 (no routine reconnection to the
-  kernel after Bootstrap) and finding 8 (fresh sessions trust durable
-  state more than they verify it).
-- **Scope boundary:** when/how existing validation is invoked during a
-  session; does not add new validation rules itself (those come from
-  Initiatives 11–12).
+  kernel after Bootstrap), finding 4 (`cmr-site` accumulated
+  schema-invalid Work Item frontmatter that a validator invocation would
+  have rejected — a validation-invocation-cadence gap, not a schema
+  gap), and finding 8 (fresh sessions trust durable state more than they
+  verify it).
+- **Scope boundary:** when/how the existing `Validate` operation is
+  invoked during a reasoning episode; adds no new public invocation
+  operation, no new validation rule, and no persistent validation state
+  (session ID, timestamp, hash, or receipt). Does not add deterministic
+  Work Item create/update operations — their absence remains an
+  acknowledged architecture/enforcement ceiling, out of this
+  initiative's scope.
 - **Major dependency:** Initiative 10, for a supported invocation path to
-  call.
-- **Success condition:** a session boundary (e.g. session start, before a
-  transition) routinely triggers existing validation against current
-  `.aiom/` state, and surfaces drift rather than silently trusting it.
-- **ADR likely:** no, expected to be an invocation/process change; to be
-  confirmed when scoped.
+  call. Met.
+- **Success condition:** the project-facing workflow contract
+  (`seed/templates/project-agents.md`, materialized into every
+  Bootstrap-managed project's own `AGENTS.md`) requires validating
+  current `.aiom/` state before a fresh or resumed reasoning episode
+  treats it as trustworthy for understanding project status, selecting
+  work, making a governance decision, or proceeding with governed
+  work — surfacing drift rather than silently trusting it. Met — a
+  reasoning episode that follows the materialized contract revalidates
+  at re-entry; Transition/Orchestrate already self-validate and need no
+  redundant call; a fallback where `mwd-aiom` cannot be invoked requires
+  treating state as explicitly unverified rather than substituting
+  successful reasoning-based reconstruction for validation. This is a
+  workflow-contract requirement, not a mechanically enforced one — AI
+  runtime compliance itself is not mechanically guaranteed; see
+  `docs/decisions/observations/2026-08-28-i13-workflow-contract-owns-validation-invocation-cadence.md`.
+- **ADR:** no — a direct application of ADR 0001's own boundary
+  (session-boundary invocation cadence "remains Initiative 13's
+  responsibility"), not a new architectural decision.
 
 ### Initiative 14 — Governance-File Provenance Detection
 
