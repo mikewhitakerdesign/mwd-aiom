@@ -3,7 +3,7 @@
 ## What this is
 
 `mwd-aiom` is the source repository for the AIOM Core Seed and Minimal
-Executable Kernel — a human-governed, AI-assisted operating architecture for
+Executable Kernel — a human-governed, AI-assisted operating model (AIOM) for
 bootstrapping, governing, validating, resuming, and evolving digital-product
 and automation work.
 
@@ -124,7 +124,7 @@ later governed work and project evidence justify that choice.
 
 ## Architecture direction
 
-The intended shape of the full architecture, most of which is **not yet
+The intended shape of the full architecture model, most of which is **not yet
 implemented**:
 
 ```
