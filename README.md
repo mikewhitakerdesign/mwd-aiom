@@ -155,12 +155,11 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 11 — Approval Artifact
-  Enforcement Coverage — complete**; see
-  `docs/decisions/observations/2026-08-21-authority-evidence-warning-mirrors-approval-scope-structural-boundary.md`
-  for the recorded evidence.
-- Next roadmap increment: **Initiative 12 — Work Item Evidence and
-  Completion Integrity** (not started)
+- Current implementation progress: **Initiative 12 — Work Item Evidence and
+  Completion Integrity — complete** (Work Item completion-state integrity
+  only; see the Initiative 12 roadmap entry below for exact scope).
+- Next roadmap increment: **Initiative 13 — Session-Boundary State
+  Validation** (not started)
 
 ## Implementation roadmap
 
@@ -178,7 +177,7 @@ implementation evidence warrants):
 9. Simple Greenfield Project POC — done
 10. Runtime Invocation Adapter — done
 11. Approval Artifact Enforcement Coverage — done
-12. Work Item Evidence and Completion Integrity
+12. Work Item Evidence and Completion Integrity — done
 13. Session-Boundary State Validation
 14. Governance-File Provenance Detection
 15. Delivery Authorization-Chain Gate
@@ -248,23 +247,39 @@ and are not yet designed. Sequencing:
 - **ADR:** no — extended an existing validation rule; no new
   architectural decision was required.
 
-### Initiative 12 — Work Item Evidence and Completion Integrity
+### Initiative 12 — Work Item Evidence and Completion Integrity — done
 
-- **Problem:** completion and evidence claims on a Work Item are too
-  weakly structured to validate reliably; `cmr-site` reached invalid
-  frontmatter state without detection.
-- **Initiative 9 evidence:** finding 4 (schema-invalid Work Item
-  frontmatter went undetected) and finding 5 (evidence/completion
-  integrity is insufficiently structured).
-- **Scope boundary:** Work Item evidence/completion schema and validation
-  only; does not redesign the broader Work Item lifecycle.
-- **Major dependency:** none blocking; can run in parallel with
-  Initiative 11.
-- **Success condition:** a Work Item shaped like `cmr-site`'s
-  `define-cmr-v1-scope.md` fails validation instead of passing silently.
-- **ADR likely:** possibly — evidence-contract changes to a durable
-  artifact schema may warrant one; to be decided when this initiative is
-  actually scoped, not now.
+- **Problem:** a Work Item's `status` field could claim `complete` while
+  its own `validation_state` field recorded that validation had not
+  passed, and general project validation did not treat that combination
+  as invalid.
+- **Initiative 9 evidence:** finding 5 (Work Item completion/evidence
+  integrity is insufficiently structured). Finding 4 (the schema-invalid
+  `cmr-site` frontmatter) was investigated and attributed to Initiative
+  13 instead: the Work Item schema already would have rejected that
+  frontmatter had the validator been invoked, so that finding is a
+  validation-invocation gap, not a Work Item structural gap.
+- **Scope boundary:** narrower than the initiative's roadmap name. This
+  increment implements Work Item completion-state integrity only — a
+  `status: complete` Work Item must have `validation_state: passed`. It
+  does not introduce a structured Work Item evidence model, evidence
+  artifacts, or evidence-sufficiency validation; does not give
+  `completion_handoff_criteria` any validated meaning; does not add a
+  `status`/`stage` rule; and does not change the Work Item schema,
+  Transition Gate, Orchestrator, or Bootstrap. The repository does not
+  currently define enough structured evidence semantics to validate
+  evidence sufficiency deterministically, so that broader scope was not
+  attempted.
+- **Major dependency:** none blocking; ran independently of Initiative 11.
+- **Success condition:** a Work Item declaring `status: complete` with a
+  `validation_state` other than `passed` fails validation instead of
+  passing silently. Met — `src/kernel/validation/references.ts` now emits
+  an error-severity `complete-item-validation-not-passed` issue for that
+  combination, alongside and independent of the existing
+  `complete-item-still-blocked` rule.
+- **ADR:** no — extended an existing validation rule with the same shape
+  as `complete-item-still-blocked`; no new architectural decision was
+  required.
 
 ### Initiative 13 — Session-Boundary State Validation
 

@@ -152,6 +152,37 @@ describe('validateProjectState — mechanically checkable contradictions', () =>
     );
   });
 
+  it('flags a Work Item marked complete whose validation_state is not "passed"', () => {
+    const result = validateProjectState(
+      fixtureDir('project-states/invalid/contradictory-complete-but-unvalidated'),
+      index,
+    );
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContainEqual(
+      expect.objectContaining({ code: 'complete-item-validation-not-passed' }),
+    );
+  });
+
+  it('does not flag complete-item-validation-not-passed when validation_state is already "passed"', () => {
+    const result = validateProjectState(
+      fixtureDir('project-states/invalid/contradictory-complete-but-blocked'),
+      index,
+    );
+    expect(result.errors).not.toContainEqual(
+      expect.objectContaining({ code: 'complete-item-validation-not-passed' }),
+    );
+  });
+
+  it('does not flag complete-item-validation-not-passed for a non-complete Work Item', () => {
+    const result = validateProjectState(
+      fixtureDir('project-states/invalid/contradictory-not-applicable-active-capability'),
+      index,
+    );
+    expect(result.errors).not.toContainEqual(
+      expect.objectContaining({ code: 'complete-item-validation-not-passed' }),
+    );
+  });
+
   it('flags a required capability whose owning bundle is marked not relevant', () => {
     const result = validateProjectState(
       fixtureDir('project-states/invalid/bundle-membership-contradiction'),
