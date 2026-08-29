@@ -154,13 +154,14 @@ mechanisms; individual projects consume them.
 
 ## Current status
 
-- AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 15 — Delivery
-  Authorization-Chain Gate — closed, no implementation** (see the
-  Initiative 15 roadmap entry below for the investigation finding and
-  disposition).
-- The dedicated AIOM v0.1 baseline assessment remains the next step and
-  is not performed as part of Initiative 15 closure.
+- AIOM/repository implementation version: **MWD AIOM v0.1 (accepted)**
+- Initiatives 1–15 are terminal (see the Implementation roadmap below).
+- The Owner has formally accepted the architecture at commit
+  `49eac236c5df64e889b57b3422b922fe30cc15f5` as **MWD AIOM v0.1** — see
+  `docs/decisions/adr/0002-accept-mwd-aiom-v0-1-baseline.md`.
+- The system is entering proving-project use. Structural architecture work
+  is no longer the default next action; future architectural change is
+  expected to be evidence-driven by proving-project use.
 
 ## Implementation roadmap
 
@@ -183,9 +184,10 @@ implementation evidence warrants):
 14. Seed Snapshot Integrity — done
 15. Delivery Authorization-Chain Gate — closed, no implementation
 
-Initiatives 10–15 follow directly from Initiative 9's closing evidence
+Initiatives 10–15 followed directly from Initiative 9's closing evidence
 (`docs/decisions/observations/2026-08-21-initiative-9-greenfield-poc-closure.md`)
-and are not yet designed. Sequencing:
+and are all done or closed (see below). Sequencing as designed and
+executed:
 
 1. **Runtime Invocation Adapter** (10) — first, since 11–15 all assume a
    supported way to invoke Bootstrap/kernel operations against a real
