@@ -87,3 +87,7 @@ is not runtime instructions for this repository.
   attribution (e.g. a tool's own auto-inserted "Generated with ..." line)
   must be removed or replaced by this line, never appended alongside it —
   a PR body must not carry both.
+- This contract is enforced deterministically by the `pr-attribution` CI
+  check (`scripts/validate-pr-attribution.mjs`). When verifying attribution
+  manually, fetch and inspect the actual PR body rather than inferring
+  compliance from CI status or PR metadata.

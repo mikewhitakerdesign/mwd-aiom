@@ -27,7 +27,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "build": "tsc -p tsconfig.build.json && chmod +x dist/cli/main.js",
     "test": "vitest run",
-    "validate": "pnpm lint && pnpm typecheck && pnpm build && pnpm test"
+    "validate": "pnpm lint && pnpm typecheck && pnpm build && pnpm test",
+    "validate:pr-attribution": "node scripts/validate-pr-attribution.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
