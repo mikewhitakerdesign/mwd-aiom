@@ -155,11 +155,12 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 14 — Seed Snapshot
-  Integrity — complete** (same-Seed-version `.aiom/seed/*` comparison
-  only; see the Initiative 14 roadmap entry below for exact scope).
-- Next roadmap increment: **Initiative 15 — Delivery Authorization-Chain
-  Gate** (not started)
+- Current implementation progress: **Initiative 15 — Delivery
+  Authorization-Chain Gate — closed, no implementation** (see the
+  Initiative 15 roadmap entry below for the investigation finding and
+  disposition).
+- The dedicated AIOM v0.1 baseline assessment remains the next step and
+  is not performed as part of Initiative 15 closure.
 
 ## Implementation roadmap
 
@@ -180,7 +181,7 @@ implementation evidence warrants):
 12. Work Item Evidence and Completion Integrity — done
 13. Session-Boundary State Validation — done
 14. Seed Snapshot Integrity — done
-15. Delivery Authorization-Chain Gate
+15. Delivery Authorization-Chain Gate — closed, no implementation
 
 Initiatives 10–15 follow directly from Initiative 9's closing evidence
 (`docs/decisions/observations/2026-08-21-initiative-9-greenfield-poc-closure.md`)
@@ -383,21 +384,48 @@ and are not yet designed. Sequencing:
   constitutes a new architectural decision. See
   `docs/decisions/observations/2026-08-28-seed-snapshot-lifecycle-and-integrity.md`.
 
-### Initiative 15 — Delivery Authorization-Chain Gate
+### Initiative 15 — Delivery Authorization-Chain Gate — closed, no implementation
 
-- **Problem:** no implemented delivery-time mechanism verifies that the
-  authority/evidence chain for the work being delivered is actually valid.
+- **Original problem statement:** no implemented delivery-time mechanism
+  verifies that the authority/evidence chain for the work being delivered
+  is actually valid.
 - **Initiative 9 evidence:** finding 7 (no implemented Git Delivery gate
-  exists; the Initiative 9 readiness audit was manual, not enforced).
-- **Scope boundary:** a delivery-time gate; does not redesign the
-  authority/evidence chain itself (that is Initiatives 11–12's scope).
-- **Major dependency:** Initiatives 11 and 12, so the gate has a
-  trustworthy authority/evidence chain to check.
-- **Success condition:** delivery is mechanically blocked when the
-  authority/evidence chain for the delivered work is invalid or missing,
-  not just withheld by manual audit.
-- **ADR likely:** yes — a delivery-time gate is an architectural decision,
-  to be made when this initiative actually begins.
+  exists; the Initiative 9 readiness audit was manual, not enforced) — a
+  single, unelaborated observation from one external, never-committed
+  proving project (`cmr-site`), with no second occurrence anywhere in
+  this repository's evidence.
+- **Investigation finding:** a dedicated read-only architectural
+  investigation (this initiative's own session) established that the
+  existing `approval-to-delivery` Transition authority boundary
+  (`src/kernel/transition/rules.ts`, evaluated in
+  `src/kernel/transition/gate.ts`) already implements the narrowest
+  mechanically sound authorization invariant identified by the I15
+  investigation: it mechanically blocks a Work Item from becoming
+  eligible to reach `stage: 'delivery'` without a covering, approved,
+  unexpired Owner Approval Artifact. That mechanism was implemented by
+  Initiative 6 (Transition & Approval Kernel) and has not changed since.
+  Initiative 6 did not anticipate Initiative 15; Initiative 15 did not
+  implement, add, or modify this mechanism — it investigated the later
+  delivery-authorization hypothesis and found this pre-existing
+  mechanism to be the narrowest invariant currently justified by
+  repository evidence.
+- **Disposition: closed, no new behavioral implementation.** No file
+  under `src/` or `tests/` changed as a result of this initiative.
+- **Explicitly deferred, not designed, not scheduled:** connecting this
+  Work-Item-level boundary to any real Git/GitHub or other
+  external-delivery action (merge, push, PR, deploy) remains an
+  unimplemented, evidence-triggered concern — a future proving project
+  would need to surface a concrete failure before such enforcement is
+  designed. Detecting whether an approved Work Item's underlying work
+  has materially changed since approval (stale authorization) is
+  likewise explicitly outside this initiative's scope and unimplemented.
+  Neither concern is represented here as solved, partially implemented,
+  or committed future work.
+- **Major dependency:** none — this initiative concluded via
+  investigation, not implementation.
+- **ADR:** no — no new architectural decision was adopted; the
+  investigation concluded the existing architecture (Initiative 6)
+  already covers the narrow invariant that can currently be justified.
 
 ## Validation
 
