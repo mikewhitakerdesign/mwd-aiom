@@ -1,9 +1,17 @@
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { loadCapabilityIndex } from '../../../src/kernel/validation/capability-index.js';
 import { evaluateTransition } from '../../../src/kernel/transition/gate.js';
 import type { ProposedTransition } from '../../../src/kernel/transition/types.js';
 import { runtimeEvidence, type RuntimeEvidenceMap } from '../../../src/kernel/runtime/evidence.js';
+import { materializeProjectState } from '../../../src/kernel/bootstrap/materialize.js';
+import { buildCandidateProfile } from '../../../src/kernel/bootstrap/profile.js';
+import { buildCapabilityActivationRecord } from '../../../src/kernel/bootstrap/capability-record.js';
+import { buildFirstWorkItem } from '../../../src/kernel/bootstrap/work-item.js';
+import { allUnknownSignals, confirmation } from '../helpers/bootstrap-fixtures.js';
 
 const fixturesRoot = fileURLToPath(new URL('../../fixtures/', import.meta.url));
 const index = loadCapabilityIndex();
@@ -345,5 +353,66 @@ describe('Transition Gate — read-only guarantee', () => {
       action: ACTION,
     });
     expect(after).toEqual(before);
+  });
+});
+
+describe('Transition Gate — Initiative 14 Seed Snapshot Integrity does not affect eligibility', () => {
+  const tempDirs: string[] = [];
+  afterEach(() => {
+    for (const dir of tempDirs.splice(0)) {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('remains mechanically-eligible when a materialized Seed asset has been hand-edited', () => {
+    const projectDir = mkdtempSync(path.join(tmpdir(), 'aiom-seed-snapshot-transition-'));
+    tempDirs.push(projectDir);
+
+    const profile = buildCandidateProfile({
+      profile: {
+        projectName: 'Seed Snapshot Integrity Transition Fixture',
+        projectIntent: 'Prove a Seed Snapshot Integrity warning does not block an eligible transition.',
+        ownerIdentity: 'Sam',
+        existingStateAssessmentPerformed: true,
+        lifecyclePosition: 'active-development',
+        signals: allUnknownSignals(),
+        consequenceConfirmations: {
+          consequential_external_action: confirmation('no', 'owner-confirmed'),
+          sensitive_or_high_consequence_data: confirmation('no', 'owner-confirmed'),
+        },
+      },
+      unresolvedItems: [],
+      bootstrapReady: true,
+      nextGovernedAction: 'Begin implementation planning.',
+    });
+    const capabilityActivation = buildCapabilityActivationRecord([], []);
+    const workItem = buildFirstWorkItem({
+      id: 'wi-seed-snapshot-fixture',
+      title: 'Seed Snapshot Integrity fixture Work Item',
+      objective: 'Exercise a mechanically-eligible transition alongside a Seed Snapshot Integrity warning.',
+      stage: 'research',
+      currentResponsibility: 'orchestrator',
+    });
+
+    const materialized = materializeProjectState(projectDir, {
+      profile,
+      capabilityActivation,
+      workItems: [workItem],
+      approvals: [],
+    });
+
+    // Hand-edit a materialized Seed asset so the underlying validateProjectState
+    // call this Gate performs internally reports a seed-snapshot-mismatch
+    // warning — proving it never reaches result.outcome or result.issues.
+    writeFileSync(path.join(materialized.stateDir, 'seed', 'core.md'), 'hand-edited core guidance', 'utf8');
+
+    const result = evaluateTransition(
+      materialized.stateDir,
+      { workItemId: 'wi-seed-snapshot-fixture', fromStage: 'research', toStage: 'implementation' },
+      index,
+    );
+
+    expect(result.outcome).toBe('mechanically-eligible');
+    expect(result.issues).toEqual([]);
   });
 });

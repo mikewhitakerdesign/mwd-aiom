@@ -174,4 +174,30 @@ describe('packaging: packed, installed artifact resolves canonical assets outsid
     const result = spawnSync(cliPath, ['validate', '--project', externalProjectDir], { encoding: 'utf8' });
     expect(result.stdout).not.toContain(repoRoot);
   });
+
+  it('Initiative 14: surfaces seed-snapshot-mismatch through the packed, installed runtime after a hand-edit', () => {
+    // Proves canonical Seed asset resolution for Seed Snapshot Integrity
+    // (src/kernel/validation/seed-snapshot-integrity.ts) works from the
+    // installed/packed `dist` + `seed` layout, not merely from a source
+    // checkout — the same falsification this file already performs for
+    // Bootstrap/Validate's own asset resolution.
+    writeFileSync(
+      path.join(externalProjectDir, '.aiom', 'seed', 'core.md'),
+      'hand-edited core guidance, outside AIOM awareness',
+      'utf8',
+    );
+
+    const result = spawnSync(cliPath, ['validate', '--project', externalProjectDir], { encoding: 'utf8' });
+    expect(result.status).toBe(0);
+    const response = JSON.parse(result.stdout.trim()) as {
+      status: string;
+      result: { valid: boolean; errors: unknown[]; warnings: { code: string; artifact?: string }[] };
+    };
+    expect(response.status).toBe('ok');
+    expect(response.result.valid).toBe(true);
+    expect(response.result.errors).toEqual([]);
+    expect(response.result.warnings).toContainEqual(
+      expect.objectContaining({ code: 'seed-snapshot-mismatch', artifact: 'seed/core.md' }),
+    );
+  });
 });

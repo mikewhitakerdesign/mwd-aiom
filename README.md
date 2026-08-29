@@ -155,11 +155,11 @@ mechanisms; individual projects consume them.
 ## Current status
 
 - AIOM/repository implementation version: **experimental v0.1**
-- Current implementation progress: **Initiative 13 — Session-Boundary State
-  Validation — complete** (state re-entry validation-invocation cadence
-  only; see the Initiative 13 roadmap entry below for exact scope).
-- Next roadmap increment: **Initiative 14 — Governance-File Provenance
-  Detection** (not started)
+- Current implementation progress: **Initiative 14 — Seed Snapshot
+  Integrity — complete** (same-Seed-version `.aiom/seed/*` comparison
+  only; see the Initiative 14 roadmap entry below for exact scope).
+- Next roadmap increment: **Initiative 15 — Delivery Authorization-Chain
+  Gate** (not started)
 
 ## Implementation roadmap
 
@@ -179,7 +179,7 @@ implementation evidence warrants):
 11. Approval Artifact Enforcement Coverage — done
 12. Work Item Evidence and Completion Integrity — done
 13. Session-Boundary State Validation — done
-14. Governance-File Provenance Detection
+14. Seed Snapshot Integrity — done
 15. Delivery Authorization-Chain Gate
 
 Initiatives 10–15 follow directly from Initiative 9's closing evidence
@@ -195,7 +195,7 @@ and are not yet designed. Sequencing:
    coverage and do not depend on each other.
 3. **Session-Boundary State Validation** (13) — after 10, since it needs
    a supported invocation path to routinely re-run against live state.
-4. **Governance-File Provenance Detection** (14).
+4. **Seed Snapshot Integrity** (14).
 5. **Delivery Authorization-Chain Gate** (15) — last, since a delivery
    gate over the authority/evidence chain presumes 11–13 exist to produce
    a trustworthy chain to check.
@@ -324,20 +324,64 @@ and are not yet designed. Sequencing:
   (session-boundary invocation cadence "remains Initiative 13's
   responsibility"), not a new architectural decision.
 
-### Initiative 14 — Governance-File Provenance Detection
+### Initiative 14 — Seed Snapshot Integrity — done
 
-- **Problem:** implementation tooling can mutate AIOM/governance-adjacent
-  files without any mechanism detecting or flagging the change.
-- **Initiative 9 evidence:** finding 6 (tooling mutated governance-adjacent
-  files outside AIOM awareness).
-- **Scope boundary:** detection/flagging only; does not itself prevent or
-  roll back such mutations.
-- **Major dependency:** benefits from Initiative 13's session-boundary
-  hook existing, though not strictly blocked by it.
-- **Success condition:** an unexpected change to a governance-adjacent
-  file is surfaced at a session boundary rather than passing unnoticed.
-- **ADR likely:** no, expected to be a detection mechanism; to be
-  confirmed when scoped.
+- **Originally scoped as "Governance-File Provenance Detection."** A
+  dedicated investigation (this initiative's preceding sessions) found
+  that Initiative 9 finding 6 ("tooling mutated governance-adjacent files
+  outside AIOM awareness") is a single, unelaborated observation from one
+  external, never-committed proving project (`cmr-site`), with no second
+  occurrence anywhere in this repository's evidence, and that general
+  mutation *attribution* (who/what/why a file changed, or whether a
+  change was authorized) is not mechanically decidable with anything this
+  architecture has or could cheaply add — no actor identity exists
+  anywhere in the invocation chain, and Git author identity does not
+  equal causal mechanism. The investigation did surface one concrete,
+  previously undocumented, mechanically decidable gap: `.aiom/seed/*`
+  (the copy of Seed guidance Bootstrap materializes into every project)
+  is consumed by the project-facing reasoning runtime but was never read
+  or validated by the deterministic kernel, so it could silently drift
+  from its own source with nothing noticing. The initiative was narrowed
+  to that gap and renamed accordingly.
+- **Problem:** a project's materialized `.aiom/seed/*` snapshot could
+  diverge from the canonical Seed content it was materialized from, with
+  no mechanism detecting it.
+- **Initiative 9 evidence:** finding 6, narrowed as described above.
+- **Approved `.aiom/seed/*` lifecycle:** a pinned Bootstrap-time snapshot
+  — not a live mirror of the installed `mwd-aiom` package, not
+  automatically refreshed when the package changes, and not currently
+  governed by any Seed upgrade/migration mechanism. No such mechanism was
+  designed or added by this initiative.
+- **Scope boundary:** deterministic comparison only when a project's
+  recorded `seed_version` is internally consistent and equals the
+  installed package's `SEED_VERSION` — the only condition under which the
+  installed package's own `seed/` is provably the exact canonical content
+  the snapshot was materialized from. The installed package retains no
+  historical Seed assets (no version-indexed registry, no Git tags, no
+  changelog), so when Seed versions differ, no comparison is attempted
+  and no conclusion is drawn — that case is Seed version-management, a
+  separate, unaddressed concern this initiative deliberately leaves out.
+  No mutation attribution, authorization inference, or delivery gating is
+  performed; the project root `AGENTS.md`/`CLAUDE.md` pointer files are
+  excluded, since their brownfield-preservation semantics mean they are
+  *expected* to diverge from their template after Bootstrap.
+- **Major dependency:** none blocking; reuses Initiative 13's re-entry
+  validation boundary and Initiative 11's advisory-warning precedent.
+- **Success condition:** when a project's Seed version matches the
+  installed package's, `mwd-aiom validate` reports a warning-severity
+  `seed-snapshot-mismatch` issue for any materialized `.aiom/seed/*` file
+  that is missing or no longer byte-matches its canonical counterpart,
+  without making `ValidationResult.valid` false and without changing
+  Transition or Orchestrate eligibility. Met — see
+  `src/kernel/validation/seed-snapshot-integrity.ts`, composed into
+  `validateProjectState` (`src/kernel/validation/validate-project.ts`).
+- **ADR:** no — an advisory validation rule of the same shape as
+  Initiative 11's, plus a behavior-neutral relocation of the
+  `SEED_VERSION` constant (`src/kernel/bootstrap/types.ts` →
+  `src/kernel/schemas/common.ts`, re-exported unchanged) to avoid a
+  `bootstrap` → `validation` → `bootstrap` dependency cycle; neither
+  constitutes a new architectural decision. See
+  `docs/decisions/observations/2026-08-28-seed-snapshot-lifecycle-and-integrity.md`.
 
 ### Initiative 15 — Delivery Authorization-Chain Gate
 

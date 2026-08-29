@@ -1,7 +1,14 @@
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { loadCapabilityIndex } from '../../../src/kernel/validation/capability-index.js';
 import { validateProjectState } from '../../../src/kernel/validation/validate-project.js';
+import { materializeProjectState } from '../../../src/kernel/bootstrap/materialize.js';
+import { buildCandidateProfile } from '../../../src/kernel/bootstrap/profile.js';
+import { buildCapabilityActivationRecord } from '../../../src/kernel/bootstrap/capability-record.js';
+import { allUnknownSignals, confirmation } from '../helpers/bootstrap-fixtures.js';
 
 const fixturesRoot = fileURLToPath(new URL('../../fixtures/', import.meta.url));
 const index = loadCapabilityIndex();
@@ -207,6 +214,90 @@ describe('validateProjectState — missing project state', () => {
     );
     expect(result.errors).toContainEqual(
       expect.objectContaining({ code: 'missing-capability-activation-record' }),
+    );
+  });
+});
+
+describe('validateProjectState — Initiative 14 Seed Snapshot Integrity warning', () => {
+  const tempDirs: string[] = [];
+  afterEach(() => {
+    for (const dir of tempDirs.splice(0)) {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  function materializeScratchProject(): string {
+    const projectDir = mkdtempSync(path.join(tmpdir(), 'aiom-seed-snapshot-validate-'));
+    tempDirs.push(projectDir);
+
+    const profile = buildCandidateProfile({
+      profile: {
+        projectName: 'Seed Snapshot Integrity Fixture',
+        projectIntent: 'Prove Seed Snapshot Integrity composes into validateProjectState.',
+        ownerIdentity: 'Sam',
+        existingStateAssessmentPerformed: true,
+        lifecyclePosition: 'active-development',
+        signals: allUnknownSignals(),
+        consequenceConfirmations: {
+          consequential_external_action: confirmation('no', 'owner-confirmed'),
+          sensitive_or_high_consequence_data: confirmation('no', 'owner-confirmed'),
+        },
+      },
+      unresolvedItems: [],
+      bootstrapReady: true,
+      nextGovernedAction: 'Begin implementation planning.',
+    });
+    const capabilityActivation = buildCapabilityActivationRecord([], []);
+
+    const materialized = materializeProjectState(projectDir, {
+      profile,
+      capabilityActivation,
+      workItems: [],
+      approvals: [],
+    });
+    return materialized.stateDir;
+  }
+
+  it('reports nothing for a freshly materialized project (canonical Seed, matching version)', () => {
+    const stateDir = materializeScratchProject();
+    const result = validateProjectState(stateDir, index);
+    expect(result.valid).toBe(true);
+    expect(result.warnings).not.toContainEqual(
+      expect.objectContaining({ code: 'seed-snapshot-mismatch' }),
+    );
+  });
+
+  it('surfaces seed-snapshot-mismatch, as a warning only, when a materialized Seed asset is hand-edited', () => {
+    const stateDir = materializeScratchProject();
+    writeFileSync(path.join(stateDir, 'seed', 'core.md'), 'hand-edited core guidance', 'utf8');
+
+    const result = validateProjectState(stateDir, index);
+    expect(result.errors).toEqual([]);
+    expect(result.valid).toBe(true);
+    expect(result.warnings).toContainEqual(
+      expect.objectContaining({
+        code: 'seed-snapshot-mismatch',
+        severity: 'warning',
+        artifact: 'seed/core.md',
+      }),
+    );
+  });
+
+  it('skips the comparison (no seed-snapshot-mismatch) when project Seed versions are already internally inconsistent', () => {
+    const result = validateProjectState(fixtureDir('project-states/invalid/seed-mismatch'), index);
+    expect(result.errors).toContainEqual(expect.objectContaining({ code: 'seed-version-mismatch' }));
+    expect(result.warnings).not.toContainEqual(
+      expect.objectContaining({ code: 'seed-snapshot-mismatch' }),
+    );
+  });
+
+  it('skips the comparison (no seed-snapshot-mismatch) when the project profile is missing', () => {
+    const result = validateProjectState(
+      fixtureDir('project-states/invalid/not-a-project-directory'),
+      index,
+    );
+    expect(result.warnings).not.toContainEqual(
+      expect.objectContaining({ code: 'seed-snapshot-mismatch' }),
     );
   });
 });
